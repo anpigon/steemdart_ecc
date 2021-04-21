@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 import 'package:pointycastle/src/utils.dart';
 import 'package:pointycastle/ecc/api.dart' show ECSignature, ECPoint;
@@ -51,8 +52,12 @@ class SteemPublicKey extends SteemKey {
     return q.getEncoded(true);
   }
 
-  String toString() {
-    return 'STM' + SteemKey.encodeKey(this.toBuffer(), keyType);
+  String toString([String address_prefix = 'STM']) {
+    return this.toPublicKeyString(address_prefix);
+  }
+
+  String toPublicKeyString([String address_prefix = 'STM']) {
+    return address_prefix + SteemKey.encodeKey(this.toBuffer(), keyType);
   }
 }
 
@@ -102,6 +107,11 @@ class SteemPrivateKey extends SteemKey {
     } else {
       throw InvalidKey('Invalid Private Key format');
     }
+  }
+
+  factory SteemPrivateKey.fromHex(String hexString) {
+    return SteemPrivateKey.fromBuffer(
+        Uint8List.fromList(hex.decode(hexString)));
   }
 
   /// Generate  private key from seed. Please note: This is not random!
