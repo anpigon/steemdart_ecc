@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 import "package:pointycastle/api.dart" show PublicKeyParameter;
 import 'package:pointycastle/ecc/api.dart'
@@ -126,6 +127,19 @@ class SteemSignature extends SteemKey {
 
     Uint8List buffer = Uint8List.fromList(b);
     return 'SIG_${keyType}_${SteemKey.encodeKey(buffer, keyType)}';
+  }
+
+  Uint8List toBuffer() {
+    List<int> b = new List();
+    b.add(i);
+    b.addAll(encodeBigInt(this.ecSig.r));
+    b.addAll(encodeBigInt(this.ecSig.s));
+    Uint8List buffer = Uint8List.fromList(b);
+    return buffer;
+  }
+
+  String toHex() {
+    return hex.encode(this.toBuffer());
   }
 
   /// ECSignature to DER format bytes

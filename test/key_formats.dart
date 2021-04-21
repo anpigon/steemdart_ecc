@@ -15,5 +15,10 @@ void main() {
       SteemPublicKey public_key = private_key.toPublicKey();
       expect(key['public_key'], public_key.toPublicKeyString());
     });
+
+    test('private_key.toHex()', () {
+      SteemPrivateKey private_key = SteemPrivateKey.fromHex(key['private_key']);
+      expect(key['private_key'], private_key.toHex());
+    });
   });
 }

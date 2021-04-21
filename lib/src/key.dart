@@ -114,6 +114,10 @@ class SteemPrivateKey extends SteemKey {
         Uint8List.fromList(hex.decode(hexString)));
   }
 
+  toHex() {
+    return hex.encode(this.d);
+  }
+
   /// Generate  private key from seed. Please note: This is not random!
   /// For the given seed, the generated key would always be the same
   factory SteemPrivateKey.fromSeed(String seed) {
@@ -173,6 +177,9 @@ class SteemPrivateKey extends SteemKey {
 
   /// Sign the SHA256 hashed data using the private key
   SteemSignature signHash(Uint8List sha256Data) {
+    if (sha256Data.lengthInBytes != 32 || sha256Data.isEmpty) {
+      throw ("buf_sha256: 32 byte buffer requred");
+    }
     int nonce = 0;
     BigInt n = SteemKey.secp256k1.n;
     BigInt e = decodeBigInt(sha256Data);
@@ -196,6 +203,9 @@ class SteemPrivateKey extends SteemKey {
         i += 27; // compact  //  24 or 27 :( forcing odd-y 2nd key candidate)
         return SteemSignature(i, sig.r, sig.s);
       }
+      if (nonce % 10 == 0) {
+        print('WARN: ${nonce} attempts to find canonical signature');
+      }
     }
   }
 
@@ -208,6 +218,7 @@ class SteemPrivateKey extends SteemKey {
     return SteemKey.encodeKey(keyWLeadingVersion, SteemKey.SHA256X2);
   }
 
+  // https://tools.ietf.org/html/rfc6979#section-3.2
   BigInt _deterministicGenerateK(
       Uint8List hash, Uint8List x, BigInt e, int nonce) {
     List<int> newHash = hash;
@@ -285,7 +296,7 @@ class SteemPrivateKey extends SteemKey {
       return false;
     }
 
-    _s = k.modInverse(SteemKey.secp256k1.n) * (e + decodeBigInt(d) * _r) % n;
+    _s = k.modInverse(n) * (e + decodeBigInt(d) * _r) % n;
     if (_s.sign == 0) {
       return false;
     }

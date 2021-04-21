@@ -7,7 +7,7 @@ import 'package:crypto/crypto.dart';
 
 void main() {
   group('Steem signature tests', () {
-    test('Construct  signature from string', () {
+    test('Construct Steem signature from string', () {
       String sigStr =
           'SIG_K1_Kg417TSLuhzSpU2bGa21kD1UNaTfAZSCcKmKpZ6fnx3Nqu22gzG3ND4Twur7bzX8oS1J91JvV4rMJcFycGqFBSaY2SJcEQ';
       SteemSignature signature = SteemSignature.fromString(sigStr);
@@ -22,11 +22,16 @@ void main() {
       SteemPublicKey publicKey = privateKey.toPublicKey();
       String expectedSig =
           'SIG_K1_Kg417TSLuhzSpU2bGa21kD1UNaTfAZSCcKmKpZ6fnx3Nqu22gzG3ND4Twur7bzX8oS1J91JvV4rMJcFycGqFBSaY2SJcEQ';
+      String expectedSigHex =
+          '2056690438023bafdb50b9538e449d3eed41a4dbca2400a3b724d4a51d647ffd390aa752b3c89cfde12b06fa57d9ee56f89eb1e4a15d1cab1a79f4a1b3df278dd8';
 
       String data = 'data';
       Uint8List hashData = sha256.convert(utf8.encode(data)).bytes;
+
       SteemSignature signature = privateKey.signHash(hashData);
       SteemSignature signature2 = privateKey.signString(data);
+
+      expect(expectedSigHex, signature.toHex());
 
       print(signature.toString());
       expect(expectedSig, signature.toString());
