@@ -1,18 +1,18 @@
-import 'package:eosdart_ecc/eosdart_ecc.dart';
+import 'package:steemdart_ecc/steemdart_ecc.dart';
 import 'package:test/test.dart';
 
-EOSPrivateKey privateKey = EOSPrivateKey.fromString(
+SteemPrivateKey privateKey = SteemPrivateKey.fromString(
     '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3');
-EOSPublicKey publicKey = privateKey.toEOSPublicKey();
+SteemPublicKey publicKey = privateKey.toPublicKey();
 
 bool eccSignAndVerify(String data) {
   privateKey.signString(data).toString();
-  EOSSignature signature = privateKey.signString(data);
+  SteemSignature signature = privateKey.signString(data);
   return signature.verify(data, publicKey);
 }
 
 void main() {
-  group('EOS signature string tests', () {
+  group('Steem signature string tests', () {
     test('ECC Sign #1', () {
       var result = eccSignAndVerify('data');
       expect(result, true);

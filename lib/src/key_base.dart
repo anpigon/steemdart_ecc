@@ -9,8 +9,8 @@ import "package:pointycastle/ecc/curves/secp256k1.dart";
 
 import './exception.dart';
 
-/// abstract EOS Key
-abstract class EOSKey {
+/// abstract SteemKey
+abstract class SteemKey {
   static final String SHA256X2 = 'sha256x2';
   static final int VERSION = 0x80;
   static final ECCurve_secp256k1 secp256k1 = ECCurve_secp256k1();

@@ -1,32 +1,32 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:eosdart_ecc/eosdart_ecc.dart';
+import 'package:steemdart_ecc/steemdart_ecc.dart';
 import 'package:test/test.dart';
 import 'package:crypto/crypto.dart';
 
 void main() {
-  group('EOS signature tests', () {
-    test('Construct EOS signature from string', () {
+  group('Steem signature tests', () {
+    test('Construct  signature from string', () {
       String sigStr =
           'SIG_K1_Kg417TSLuhzSpU2bGa21kD1UNaTfAZSCcKmKpZ6fnx3Nqu22gzG3ND4Twur7bzX8oS1J91JvV4rMJcFycGqFBSaY2SJcEQ';
-      EOSSignature signature = EOSSignature.fromString(sigStr);
+      SteemSignature signature = SteemSignature.fromString(sigStr);
       print(signature);
 
       expect(sigStr, signature.toString());
     });
 
     test('Sign the hash using private key', () {
-      EOSPrivateKey privateKey = EOSPrivateKey.fromString(
+      SteemPrivateKey privateKey = SteemPrivateKey.fromString(
           '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3');
-      EOSPublicKey publicKey = privateKey.toEOSPublicKey();
+      SteemPublicKey publicKey = privateKey.toPublicKey();
       String expectedSig =
           'SIG_K1_Kg417TSLuhzSpU2bGa21kD1UNaTfAZSCcKmKpZ6fnx3Nqu22gzG3ND4Twur7bzX8oS1J91JvV4rMJcFycGqFBSaY2SJcEQ';
 
       String data = 'data';
       Uint8List hashData = sha256.convert(utf8.encode(data)).bytes;
-      EOSSignature signature = privateKey.signHash(hashData);
-      EOSSignature signature2 = privateKey.signString(data);
+      SteemSignature signature = privateKey.signHash(hashData);
+      SteemSignature signature2 = privateKey.signString(data);
 
       print(signature.toString());
       expect(expectedSig, signature.toString());
@@ -38,9 +38,9 @@ void main() {
     });
 
     test('Sign the hash using private key', () {
-      EOSPrivateKey privateKey = EOSPrivateKey.fromString(
+      SteemPrivateKey privateKey = SteemPrivateKey.fromString(
           '5HxT6prWB8VuXkoAaX3eby8bWjquMtCvGuakhC8tGEiPSHfsQLR');
-      EOSPublicKey publicKey = privateKey.toEOSPublicKey();
+      SteemPublicKey publicKey = privateKey.toPublicKey();
       String expectedSig =
           'SIG_K1_Kdfe9wknSAKBmgwb3L53CG8KosoHhZ69oVEJrrH5YuWx4JVcJdn1ZV3MU25AVho4mPbeSKW79DVTBAAWj7zGbHTByF1JXU';
 
@@ -79,7 +79,7 @@ void main() {
         201
       ];
       Uint8List hashData = Uint8List.fromList(l);
-      EOSSignature signature = privateKey.signHash(hashData);
+      SteemSignature signature = privateKey.signHash(hashData);
 
       expect(expectedSig, signature.toString());
       print(signature.toString());
@@ -87,9 +87,9 @@ void main() {
     });
 
     test('Sign the hash using private key', () {
-      EOSPrivateKey privateKey = EOSPrivateKey.fromString(
+      SteemPrivateKey privateKey = SteemPrivateKey.fromString(
           '5J9b3xMkbvcT6gYv2EpQ8FD4ZBjgypuNKwE1jxkd7Wd1DYzhk88');
-      EOSPublicKey publicKey = privateKey.toEOSPublicKey();
+      SteemPublicKey publicKey = privateKey.toPublicKey();
       String expectedSig =
           'SIG_K1_KWfDGxwogny1PUiBAYTfKwPsCSNvM7zWgmXyChdYayZFfyPjddpBUYVdJTq1PjC3PRXADRsqWVU1N2SMQivBDqA7AaRzmB';
 
@@ -128,26 +128,26 @@ void main() {
         142
       ];
       Uint8List hashData = Uint8List.fromList(l);
-      EOSSignature signature = privateKey.signHash(hashData);
+      SteemSignature signature = privateKey.signHash(hashData);
 
       expect(expectedSig, signature.toString());
       print(signature.toString());
       expect(true, signature.verifyHash(hashData, publicKey));
     });
 
-    test('Recover EOSPublicKey from sign data', () {
+    test('Recover PublicKey from sign data', () {
       const data = 'this is some data to sign';
 
-      var eosPrivateKey = EOSPrivateKey.fromRandom();
-      var eosPublicKey = eosPrivateKey.toEOSPublicKey();
+      var PrivateKey = SteemPrivateKey.fromRandom();
+      var PublicKey = PrivateKey.toPublicKey();
 
-      var signature = eosPrivateKey.signString(data);
+      var signature = PrivateKey.signString(data);
 
-      var recoveredEOSPublicKey = signature.recover(data);
+      var recoveredPublicKey = signature.recover(data);
 
-      expect(eosPublicKey.toString(), recoveredEOSPublicKey.toString());
-      print('Generated EOSPublicKey : ${eosPublicKey.toString()}');
-      print('Recovered EOSPublicKey : ${recoveredEOSPublicKey.toString()}');
+      expect(PublicKey.toString(), recoveredPublicKey.toString());
+      print('Generated PublicKey : ${PublicKey.toString()}');
+      print('Recovered PublicKey : ${recoveredPublicKey.toString()}');
     });
   });
 }
