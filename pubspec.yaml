@@ -11,6 +11,8 @@ dependencies:
   pointycastle: ^1.0.1
   crypto: ^2.1.5
   convert: ^2.1.1
+  http: ^0.13.3
 
 dev_dependencies:
   test: ^1.0.0
+  dotenv: ^3.0.0

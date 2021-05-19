@@ -1,5 +1,6 @@
-import 'package:steemdart_ecc/steemdart_ecc.dart';
 import 'package:test/test.dart';
+
+import '../lib/steemdart_ecc.dart';
 
 void main() {
   group('Steem Key tests', () {

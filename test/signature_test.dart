@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:convert/convert.dart';
 import 'package:steemdart_ecc/steemdart_ecc.dart';
 import 'package:test/test.dart';
 import 'package:crypto/crypto.dart';
@@ -27,6 +28,7 @@ void main() {
 
       String data = 'data';
       Uint8List hashData = sha256.convert(utf8.encode(data)).bytes;
+      print('hashData' + hex.encode(hashData));
 
       SteemSignature signature = privateKey.signHash(hashData);
       SteemSignature signature2 = privateKey.signString(data);
