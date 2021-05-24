@@ -16,3 +16,4 @@ dependencies:
 dev_dependencies:
   test: ^1.17.4
   dotenv: ^3.0.0
+  pedantic: ^1.11.0
