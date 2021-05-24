@@ -25,11 +25,11 @@ class Client {
   final String chainId;
   final String addressPrefix;
 
-  DatabaseAPI _database;
-  DatabaseAPI get database => _database;
+  DatabaseAPI? _database;
+  DatabaseAPI? get database => _database;
 
-  BroadcastAPI _broadcast;
-  BroadcastAPI get broadcast => _broadcast;
+  BroadcastAPI? _broadcast;
+  BroadcastAPI? get broadcast => _broadcast;
 
   Client(
     this.address, {

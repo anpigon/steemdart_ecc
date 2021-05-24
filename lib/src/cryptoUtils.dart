@@ -21,7 +21,7 @@ SignedTransaction signTransaction(
   final digest = transactionDigest(transaction.toMap(), chainId);
   List<String> signatures = [];
   for (final key in keys) {
-    SteemSignature signature = key.signHash(digest);
+    SteemSignature signature = key.signHash(digest as Uint8List);
     signatures.add(signature.toHex().toString());
   }
 

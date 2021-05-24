@@ -16,12 +16,12 @@ void main() {
 
   group('broadcast api', () {
     test('should broadcast comment', () async {
-      final key = SteemPrivateKey.fromString(TEST_POSTING_KEY);
+      final key = SteemPrivateKey.fromString(TEST_POSTING_KEY!);
       final postPermlink =
           'dart-steem-test-${getRandomString(7).toLowerCase()}';
       final body =
           '![picture](https://unsplash.it/1200/800?image=${~~(Random().nextDouble() * 1085).floor()})';
-      final result = await client.broadcast.comment({
+      final result = await client.broadcast?.comment({
         'parent_author': '',
         'parent_permlink': 'test',
         'author': TEST_ACCOUNT,

@@ -1,13 +1,13 @@
 import './operation.dart';
 
 class Transaction {
-  final String transaction_id;
-  final int transaction_num;
-  final int ref_block_num;
-  final int ref_block_prefix;
-  final String expiration;
-  final List<Operation> operations;
-  final List extensions;
+  final String? transaction_id;
+  final int? transaction_num;
+  final int? ref_block_num;
+  final int? ref_block_prefix;
+  final String? expiration;
+  final List<Operation>? operations;
+  final List? extensions;
 
   const Transaction({
     this.ref_block_num,
@@ -40,7 +40,7 @@ class Transaction {
       'expiration': this.expiration,
       'extensions': this.extensions,
       'operations':
-          this.operations.map<List>((operation) => operation.export()).toList(),
+          this.operations!.map<List>((operation) => operation.export()).toList(),
       if (this.transaction_id != null) ...{
         'transaction_id': this.transaction_id,
       },
@@ -54,7 +54,7 @@ class Transaction {
 }
 
 class SignedTransaction extends Transaction {
-  final List<String> signatures;
+  final List<String>? signatures;
 
   SignedTransaction(Transaction tx, this.signatures)
       : super(

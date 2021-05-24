@@ -92,7 +92,7 @@ class ObjectSerializer implements Serializer<Map<String, dynamic>> {
   @override
   void appendByteBuffer(buffer, value) {
     for (final key in keySerializers.keys) {
-      Serializer serializer = keySerializers[key];
+      Serializer serializer = keySerializers[key]!;
       try {
         serializer.appendByteBuffer(buffer, value[key]);
       } catch (error) {

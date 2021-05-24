@@ -2,65 +2,65 @@
  * Node state.
  */
 class DynamicGlobalProperties {
-  final String id;
+  final String? id;
 
   /**
    * Current block height.
    */
-  final int head_block_number;
-  final String head_block_id;
+  final int? head_block_number;
+  final String? head_block_id;
 
   /**
    * UTC Server time, e.g. 2020-01-15T00:42:00
    */
-  final String time;
+  final String? time;
 
   /**
    * Currently elected witness.
    */
-  final String current_witness;
+  final String? current_witness;
 
   /**
    * The total POW accumulated, aka the sum of num_pow_witness at the time
    * new POW is added.
    */
-  final int total_pow;
+  final int? total_pow;
 
   /**
    * The current count of how many pending POW witnesses there are, determines
    * the difficulty of doing pow.
    */
-  final int num_pow_witnesses;
-  final String virtual_supply;
-  final String current_supply;
+  final int? num_pow_witnesses;
+  final String? virtual_supply;
+  final String? current_supply;
 
   /**
    * Total asset held in confidential balances.
    */
-  final String confidential_supply;
-  final String init_sbd_supply;
-  final String current_sbd_supply;
+  final String? confidential_supply;
+  final String? init_sbd_supply;
+  final String? current_sbd_supply;
 
   /**
    * Total asset held in confidential balances.
    */
-  final String confidential_sbd_supply;
-  final String total_vesting_fund_steem;
-  final String total_vesting_shares;
-  final String total_reward_fund_steem;
+  final String? confidential_sbd_supply;
+  final String? total_vesting_fund_steem;
+  final String? total_vesting_shares;
+  final String? total_reward_fund_steem;
 
   /**
    * The running total of REWARD^2.
    */
-  final String total_reward_shares2;
-  final String pending_rewarded_vesting_shares;
-  final String pending_rewarded_vesting_steem;
+  final String? total_reward_shares2;
+  final String? pending_rewarded_vesting_shares;
+  final String? pending_rewarded_vesting_steem;
 
   /**
    * This property defines the interest rate that SBD deposits receive.
    */
-  final int sbd_interest_rate;
-  final int sbd_print_rate;
+  final int? sbd_interest_rate;
+  final int? sbd_print_rate;
 
   /**
    *  Average block size is updated every block to be:
@@ -70,9 +70,9 @@ class DynamicGlobalProperties {
    *  This property is used to update the current_reserve_ratio to maintain
    *  approximately 50% or less utilization of network capacity.
    */
-  final int average_block_size;
+  final int? average_block_size;
 
-  final int required_actions_partition_percent;
+  final int? required_actions_partition_percent;
 
   /**
    * Maximum block size is decided by the set of active witnesses which change every round.
@@ -82,21 +82,21 @@ class DynamicGlobalProperties {
    * @note the minimum value for maximum_block_size is defined by the protocol to prevent the
    * network from getting stuck by witnesses attempting to set this too low.
    */
-  final int maximum_block_size;
+  final int? maximum_block_size;
 
   /**
    * The current absolute slot number. Equal to the total
    * number of slots since genesis. Also equal to the total
    * number of missed slots plus head_block_number.
    */
-  final int current_aslot;
+  final int? current_aslot;
 
   /**
    * Used to compute witness participation.
    */
-  final String recent_slots_filled;
-  final int participation_count;
-  final int last_irreversible_block_num;
+  final String? recent_slots_filled;
+  final int? participation_count;
+  final int? last_irreversible_block_num;
 
   /**
    * The maximum bandwidth the blockchain can support is:
@@ -107,7 +107,7 @@ class DynamicGlobalProperties {
    *
    *    max_bandwidth * current_reserve_ratio
    */
-  final String max_virtual_bandwidth;
+  final String? max_virtual_bandwidth;
 
   /**
    * Any time average_block_size <= 50% maximum_block_size this value grows by 1 until it
@@ -115,27 +115,27 @@ class DynamicGlobalProperties {
    * 50% it falls by 1%.  Upward adjustments happen once per round, downward adjustments
    * happen every block.
    */
-  final int current_reserve_ratio;
+  final int? current_reserve_ratio;
 
   /**
    * The number of votes regenerated per day.  Any user voting slower than this rate will be
    * "wasting" voting power through spillover; any user voting faster than this rate will have
    * their votes reduced.
    */
-  final int vote_power_reserve_rate;
+  final int? vote_power_reserve_rate;
 
-  final int delegation_return_period;
-  final int reverse_auction_seconds;
-  final int available_account_subsidies;
-  final int sbd_stop_percent;
-  final int sbd_start_percent;
-  final String next_maintenance_time;
-  final String last_budget_time;
-  final int content_reward_percent;
-  final int vesting_reward_percent;
-  final int sps_fund_percent;
-  final String sps_interval_ledger;
-  final int downvote_pool_percent;
+  final int? delegation_return_period;
+  final int? reverse_auction_seconds;
+  final int? available_account_subsidies;
+  final int? sbd_stop_percent;
+  final int? sbd_start_percent;
+  final String? next_maintenance_time;
+  final String? last_budget_time;
+  final int? content_reward_percent;
+  final int? vesting_reward_percent;
+  final int? sps_fund_percent;
+  final String? sps_interval_ledger;
+  final int? downvote_pool_percent;
 
   DynamicGlobalProperties(Map<String, dynamic> value)
       : this.id = value['id'],

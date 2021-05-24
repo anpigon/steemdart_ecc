@@ -79,11 +79,11 @@ void main() {
     }, skip: false);
 
     test('ArraySerializer', () async {
-      final value = tx['operations'];
+      final value = tx['operations']!;
       const expected =
           '01010004746573740867756573743132331364737465656d2d746573742d6d657075746a61047465737404746573741d7b22666f6f223a22626172222c2274616773223a5b2274657374225d7d';
       BytesBuilder buffer = BytesBuilder();
-      ArraySerializer(OperationSerializer()).appendByteBuffer(buffer, value);
+      ArraySerializer(OperationSerializer()).appendByteBuffer(buffer, value as List<dynamic>);
       final result = hex.encode(buffer.toBytes());
       expect(result, expected);
     }, skip: false);

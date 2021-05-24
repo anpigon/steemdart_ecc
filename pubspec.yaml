@@ -4,7 +4,7 @@ version: 0.4.3
 homepage: https://github.com/anpigon/steemdart_ecc
 
 environment:
-  sdk: ">=2.4.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   bs58check: ^1.0.2

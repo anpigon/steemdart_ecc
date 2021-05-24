@@ -18,8 +18,8 @@ import './key_base.dart';
 
 ///  Steem Signature
 class SteemSignature extends SteemKey {
-  int i;
-  ECSignature ecSig;
+  int? i;
+  late ECSignature ecSig;
 
   /// Default constructor from i, r, s
   SteemSignature(this.i, BigInt r, BigInt s) {
@@ -28,7 +28,7 @@ class SteemSignature extends SteemKey {
   }
 
   /// Construct  signature from buffer
-  SteemSignature.fromBuffer(Uint8List buffer, String keyType) {
+  SteemSignature.fromBuffer(Uint8List buffer, String? keyType) {
     this.keyType = keyType;
 
     if (buffer.lengthInBytes != 65) {
@@ -38,7 +38,7 @@ class SteemSignature extends SteemKey {
 
     i = buffer.first;
 
-    if (i - 27 != i - 27 & 7) {
+    if (i! - 27 != i! - 27 & 7) {
       throw InvalidKey('Invalid signature parameter');
     }
 
@@ -55,8 +55,8 @@ class SteemSignature extends SteemKey {
 
     if (match.length == 1) {
       Match m = match.first;
-      String keyType = m.group(1);
-      Uint8List key = SteemKey.decodeKey(m.group(2), keyType);
+      String? keyType = m.group(1);
+      Uint8List key = SteemKey.decodeKey(m.group(2)!, keyType);
       return SteemSignature.fromBuffer(key, keyType);
     }
 
@@ -67,12 +67,12 @@ class SteemSignature extends SteemKey {
   bool verify(String data, SteemPublicKey publicKey) {
     Digest d = sha256.convert(utf8.encode(data));
 
-    return verifyHash(d.bytes, publicKey);
+    return verifyHash(d.bytes as Uint8List, publicKey);
   }
 
   /// Verify the signature from in SHA256 hashed data
   bool verifyHash(Uint8List sha256Data, SteemPublicKey publicKey) {
-    ECPoint q = publicKey.q;
+    ECPoint? q = publicKey.q;
     final signer = ECDSASigner(null, HMac(SHA256Digest(), 64));
     signer.init(false, PublicKeyParameter(ECPublicKey(q, SteemKey.secp256k1)));
 
@@ -110,7 +110,7 @@ class SteemSignature extends SteemKey {
     }
 
     var e = decodeBigInt(dataSha256Buf);
-    var i2 = i;
+    var i2 = i!;
     i2 -= 27;
     i2 = i2 & 3;
 
@@ -120,21 +120,21 @@ class SteemSignature extends SteemKey {
   }
 
   String toString() {
-    List<int> b = List();
+    List<int?> b = [];
     b.add(i);
     b.addAll(encodeBigInt(this.ecSig.r));
     b.addAll(encodeBigInt(this.ecSig.s));
 
-    Uint8List buffer = Uint8List.fromList(b);
+    Uint8List buffer = Uint8List.fromList(b as List<int>);
     return 'SIG_${keyType}_${SteemKey.encodeKey(buffer, keyType)}';
   }
 
   Uint8List toBuffer() {
-    List<int> b = new List();
+    List<int?> b = [];
     b.add(i);
     b.addAll(encodeBigInt(this.ecSig.r));
     b.addAll(encodeBigInt(this.ecSig.s));
-    Uint8List buffer = Uint8List.fromList(b);
+    Uint8List buffer = Uint8List.fromList(b as List<int>);
     return buffer;
   }
 
@@ -147,7 +147,7 @@ class SteemSignature extends SteemKey {
     List<int> r = SteemKey.toSigned(encodeBigInt(ecSig.r));
     List<int> s = SteemKey.toSigned(encodeBigInt(ecSig.s));
 
-    List<int> b = List();
+    List<int> b = [];
     b.add(0x02);
     b.add(r.length);
     b.addAll(r);
@@ -166,7 +166,7 @@ class SteemSignature extends SteemKey {
   static int calcPubKeyRecoveryParam(
       BigInt e, ECSignature ecSig, SteemPublicKey publicKey) {
     for (int i = 0; i < 4; i++) {
-      ECPoint Qprime = recoverPubKey(e, ecSig, i);
+      ECPoint? Qprime = recoverPubKey(e, ecSig, i);
       if (Qprime == publicKey.q) {
         return i;
       }
@@ -175,7 +175,7 @@ class SteemSignature extends SteemKey {
   }
 
   /// Recovery  public key from ECSignature
-  static ECPoint recoverPubKey(BigInt e, ECSignature ecSig, int i) {
+  static ECPoint? recoverPubKey(BigInt e, ECSignature ecSig, int i) {
     BigInt n = SteemKey.secp256k1.n;
     ECPoint G = SteemKey.secp256k1.G;
 
@@ -192,7 +192,7 @@ class SteemSignature extends SteemKey {
     // 1.1 Let x = r + jn
     BigInt x = isSecondKey > 0 ? r + n : r;
     ECPoint R = SteemKey.secp256k1.curve.decompressPoint(isYOdd, x);
-    ECPoint nR = R * n;
+    ECPoint nR = (R * n)!;
     if (!nR.isInfinity) {
       throw 'nR is not a valid curve point';
     }
@@ -200,7 +200,7 @@ class SteemSignature extends SteemKey {
     BigInt eNeg = (-e) % n;
     BigInt rInv = r.modInverse(n);
 
-    ECPoint Q = multiplyTwo(R, s, G, eNeg) * rInv;
+    ECPoint? Q = multiplyTwo(R, s, G, eNeg)! * rInv;
     return Q;
   }
 
@@ -208,25 +208,25 @@ class SteemSignature extends SteemKey {
     return (j >> n).toUnsigned(1).toInt() == 1;
   }
 
-  static ECPoint multiplyTwo(ECPoint t, BigInt j, ECPoint x, BigInt k) {
+  static ECPoint? multiplyTwo(ECPoint t, BigInt j, ECPoint x, BigInt k) {
     int i = max(j.bitLength, k.bitLength) - 1;
-    ECPoint R = t.curve.infinity;
-    ECPoint both = t + x;
+    ECPoint? R = t.curve.infinity;
+    ECPoint? both = t + x;
 
     while (i >= 0) {
       bool jBit = testBit(j, i);
       bool kBit = testBit(k, i);
 
-      R = R.twice();
+      R = R!.twice();
 
       if (jBit) {
         if (kBit) {
-          R = R + both;
+          R = R! + both;
         } else {
-          R = R + t;
+          R = R! + t;
         }
       } else if (kBit) {
-        R = R + x;
+        R = R! + x;
       }
 
       --i;

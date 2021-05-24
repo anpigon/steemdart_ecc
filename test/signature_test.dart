@@ -27,7 +27,7 @@ void main() {
           '2056690438023bafdb50b9538e449d3eed41a4dbca2400a3b724d4a51d647ffd390aa752b3c89cfde12b06fa57d9ee56f89eb1e4a15d1cab1a79f4a1b3df278dd8';
 
       String data = 'data';
-      Uint8List hashData = sha256.convert(utf8.encode(data)).bytes;
+      Uint8List hashData = sha256.convert(utf8.encode(data)).bytes as Uint8List;
       print('hashData' + hex.encode(hashData));
 
       SteemSignature signature = privateKey.signHash(hashData);

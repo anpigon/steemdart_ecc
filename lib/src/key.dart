@@ -13,7 +13,7 @@ import './signature.dart';
 
 ///  Steem Public Key
 class SteemPublicKey extends SteemKey {
-  ECPoint q;
+  ECPoint? q;
 
   /// Construct  public key from buffer
   SteemPublicKey.fromPoint(this.q);
@@ -34,8 +34,8 @@ class SteemPublicKey extends SteemKey {
       return SteemPublicKey.fromBuffer(buffer);
     } else if (match.length == 1) {
       Match m = match.first;
-      String keyType = m.group(1);
-      Uint8List buffer = SteemKey.decodeKey(m.group(2), keyType);
+      String? keyType = m.group(1);
+      Uint8List buffer = SteemKey.decodeKey(m.group(2)!, keyType);
       return SteemPublicKey.fromBuffer(buffer);
     } else {
       throw InvalidKey('Invalid public key format');
@@ -43,13 +43,13 @@ class SteemPublicKey extends SteemKey {
   }
 
   factory SteemPublicKey.fromBuffer(Uint8List buffer) {
-    ECPoint point = SteemKey.secp256k1.curve.decodePoint(buffer);
+    ECPoint? point = SteemKey.secp256k1.curve.decodePoint(buffer);
     return SteemPublicKey.fromPoint(point);
   }
 
   Uint8List toBuffer() {
     // always compressed
-    return q.getEncoded(true);
+    return q!.getEncoded(true);
   }
 
   String toString([String address_prefix = 'STM']) {
@@ -63,11 +63,11 @@ class SteemPublicKey extends SteemKey {
 
 ///  Steem Private Key
 class SteemPrivateKey extends SteemKey {
-  Uint8List d;
-  String format;
+  Uint8List? d;
+  String? format;
 
-  BigInt _r;
-  BigInt _s;
+  late BigInt _r;
+  late BigInt _s;
 
   /// Constructor  private key from the key buffer itself
   SteemPrivateKey.fromBuffer(this.d);
@@ -91,19 +91,19 @@ class SteemPrivateKey extends SteemKey {
       }
 
       d = keyWLeadingVersion.sublist(1, keyWLeadingVersion.length);
-      if (d.lengthInBytes == 33 && d.elementAt(32) == 1) {
+      if (d!.lengthInBytes == 33 && d!.elementAt(32) == 1) {
         // remove compression flag
-        d = d.sublist(0, 32);
+        d = d!.sublist(0, 32);
       }
 
-      if (d.lengthInBytes != 32) {
-        throw InvalidKey('Expecting 32 bytes, got ${d.length}');
+      if (d!.lengthInBytes != 32) {
+        throw InvalidKey('Expecting 32 bytes, got ${d!.length}');
       }
     } else if (match.length == 1) {
       format = 'PVT';
       Match m = match.first;
       keyType = m.group(1);
-      d = SteemKey.decodeKey(m.group(2), keyType);
+      d = SteemKey.decodeKey(m.group(2)!, keyType);
     } else {
       throw InvalidKey('Invalid Private Key format');
     }
@@ -115,14 +115,14 @@ class SteemPrivateKey extends SteemKey {
   }
 
   toHex() {
-    return hex.encode(this.d);
+    return hex.encode(this.d!);
   }
 
   /// Generate  private key from seed. Please note: This is not random!
   /// For the given seed, the generated key would always be the same
   factory SteemPrivateKey.fromSeed(String seed) {
     Digest s = sha256.convert(utf8.encode(seed));
-    return SteemPrivateKey.fromBuffer(s.bytes);
+    return SteemPrivateKey.fromBuffer(s.bytes as Uint8List?);
   }
 
   /// Generate the random  private key
@@ -150,7 +150,7 @@ class SteemPrivateKey extends SteemKey {
     entropy.addAll(entropy3);
     Uint8List randomKey = Uint8List.fromList(entropy);
     Digest d = sha256.convert(randomKey);
-    return SteemPrivateKey.fromBuffer(d.bytes);
+    return SteemPrivateKey.fromBuffer(d.bytes as Uint8List?);
   }
 
   /// Check if the private key is WIF format
@@ -158,8 +158,8 @@ class SteemPrivateKey extends SteemKey {
 
   /// Get the public key string from this private key
   SteemPublicKey toPublicKey() {
-    BigInt privateKeyNum = decodeBigInt(this.d);
-    ECPoint ecPoint = SteemKey.secp256k1.G * privateKeyNum;
+    BigInt privateKeyNum = decodeBigInt(this.d!);
+    ECPoint? ecPoint = SteemKey.secp256k1.G * privateKeyNum;
 
     return SteemPublicKey.fromPoint(ecPoint);
   }
@@ -167,12 +167,12 @@ class SteemPrivateKey extends SteemKey {
   /// Sign the bytes data using the private key
   SteemSignature sign(Uint8List data) {
     Digest d = sha256.convert(data);
-    return signHash(d.bytes);
+    return signHash(d.bytes as Uint8List);
   }
 
   /// Sign the string data using the private key
   SteemSignature signString(String data) {
-    return sign(utf8.encode(data));
+    return sign(utf8.encode(data) as Uint8List);
   }
 
   /// Sign the SHA256 hashed data using the private key
@@ -185,7 +185,7 @@ class SteemPrivateKey extends SteemKey {
     BigInt e = decodeBigInt(sha256Data);
 
     while (true) {
-      _deterministicGenerateK(sha256Data, this.d, e, nonce++);
+      _deterministicGenerateK(sha256Data, this.d!, e, nonce++);
       var N_OVER_TWO = n >> 1;
       if (_s.compareTo(N_OVER_TWO) > 0) {
         _s = n - _s;
@@ -210,10 +210,10 @@ class SteemPrivateKey extends SteemKey {
   }
 
   String toString() {
-    List<int> version = List<int>();
+    List<int> version = [];
     version.add(SteemKey.VERSION);
     Uint8List keyWLeadingVersion =
-        SteemKey.concat(Uint8List.fromList(version), this.d);
+        SteemKey.concat(Uint8List.fromList(version), this.d!);
 
     return SteemKey.encodeKey(keyWLeadingVersion, SteemKey.SHA256X2);
   }
@@ -244,11 +244,11 @@ class SteemPrivateKey extends SteemKey {
       ..addAll(newHash);
 
     Hmac hMacSha256 = Hmac(sha256, k); // HMAC-SHA256
-    k = hMacSha256.convert(d1).bytes;
+    k = hMacSha256.convert(d1).bytes as Uint8List;
 
     // Step E
     hMacSha256 = Hmac(sha256, k); // HMAC-SHA256
-    v = hMacSha256.convert(v).bytes;
+    v = hMacSha256.convert(v).bytes as Uint8List;
 
     // Step F
     List<int> d2 = List.from(v)
@@ -256,27 +256,27 @@ class SteemPrivateKey extends SteemKey {
       ..addAll(x)
       ..addAll(newHash);
 
-    k = hMacSha256.convert(d2).bytes;
+    k = hMacSha256.convert(d2).bytes as Uint8List;
 
     // Step G
     hMacSha256 = Hmac(sha256, k); // HMAC-SHA256
-    v = hMacSha256.convert(v).bytes;
+    v = hMacSha256.convert(v).bytes as Uint8List;
     // Step H1/H2a, again, ignored as tlen === qlen (256 bit)
     // Step H2b again
-    v = hMacSha256.convert(v).bytes;
+    v = hMacSha256.convert(v).bytes as Uint8List;
 
     BigInt T = decodeBigInt(v);
     // Step H3, repeat until T is within the interval [1, n - 1]
     while (T.sign <= 0 ||
         T.compareTo(SteemKey.secp256k1.n) >= 0 ||
-        !_checkSig(e, newHash, T)) {
+        !_checkSig(e, newHash as Uint8List, T)) {
       List<int> d3 = List.from(v)..add(0);
-      k = hMacSha256.convert(d3).bytes;
+      k = hMacSha256.convert(d3).bytes as Uint8List;
       hMacSha256 = Hmac(sha256, k); // HMAC-SHA256
-      v = hMacSha256.convert(v).bytes;
+      v = hMacSha256.convert(v).bytes as Uint8List;
       // Step H1/H2a, again, ignored as tlen === qlen (256 bit)
       // Step H2b again
-      v = hMacSha256.convert(v).bytes;
+      v = hMacSha256.convert(v).bytes as Uint8List;
 
       T = decodeBigInt(v);
     }
@@ -285,18 +285,18 @@ class SteemPrivateKey extends SteemKey {
 
   bool _checkSig(BigInt e, Uint8List hash, BigInt k) {
     BigInt n = SteemKey.secp256k1.n;
-    ECPoint Q = SteemKey.secp256k1.G * k;
+    ECPoint Q = (SteemKey.secp256k1.G * k)!;
 
     if (Q.isInfinity) {
       return false;
     }
 
-    _r = Q.x.toBigInteger() % n;
+    _r = Q.x!.toBigInteger()! % n;
     if (_r.sign == 0) {
       return false;
     }
 
-    _s = k.modInverse(n) * (e + decodeBigInt(d) * _r) % n;
+    _s = k.modInverse(n) * (e + decodeBigInt(d!) * _r) % n;
     if (_s.sign == 0) {
       return false;
     }
