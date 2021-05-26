@@ -17,6 +17,20 @@ int calculateVarint32(int value) {
   }
 }
 
+Uint8List byteVarint32(int value) {
+  final byte = ByteData(calculateVarint32(value));
+  var offset = 0;
+  var b = 0;
+  value >> 0;
+  while (value >= 0x80) {
+    b = (value & 0x7f) | 0x80;
+    byte.setUint8(offset++, b);
+    value = value >> 7;
+  }
+  byte.setUint8(offset++, value);
+  return byte.buffer.asUint8List();
+}
+
 abstract class Serializer<T extends dynamic> {
   void appendByteBuffer(BytesBuilder buffer, T value) {}
 }
@@ -43,19 +57,8 @@ class StringSerializer implements Serializer<String> {
   @override
   void appendByteBuffer(buffer, value) {
     final bytes = utf8.encode(value);
-    var k = bytes.length;
-    final byte = ByteData(calculateVarint32(k));
-    var offset = 0;
-    var b = 0;
-    k >> 0;
-    while (k >= 0x80) {
-      b = (k & 0x7f) | 0x80;
-      byte.setUint8(offset++, b);
-      k = k >> 7;
-    }
-    byte.setUint8(offset++, k);
-    buffer.add(byte.buffer.asUint8List());
-    buffer.add(Uint8List.fromList(utf8.encode(value)));
+    buffer.add(byteVarint32(bytes.length));
+    buffer.add(Uint8List.fromList(bytes));
   }
 }
 
@@ -81,12 +84,7 @@ class ArraySerializer implements Serializer<List<dynamic>> {
 
   @override
   void appendByteBuffer(buffer, values) {
-    final data = values.length;
-    final size = calculateVarint32(data);
-    final byte = ByteData(size);
-    byte.setUint8(0, data);
-
-    buffer.add(byte.buffer.asUint8List());
+    buffer.add(byteVarint32(values.length));
     for (final value in values) {
       itemSerializer.appendByteBuffer(buffer, value);
     }
@@ -140,9 +138,7 @@ class OperationDataSerializer implements Serializer<Map<String, dynamic>> {
 
   @override
   void appendByteBuffer(buffer, value) {
-    final byte = ByteData(1);
-    byte.setInt8(0, operationId);
-    buffer.add(byte.buffer.asUint8List());
+    buffer.add(byteVarint32(operationId));
     _objectSerializer.appendByteBuffer(buffer, value);
   }
 }

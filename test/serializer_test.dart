@@ -36,7 +36,7 @@ void main() {
       UInt16Serializer().appendByteBuffer(buffer, value);
       final result = hex.encode(buffer.toBytes());
       expect(expected, result);
-    }, skip: true);
+    }, skip: false);
 
     test('UInt32Serializer', () async {
       const value = 2047678077;
