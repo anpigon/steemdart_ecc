@@ -21,7 +21,7 @@ void main() {
       final postPermlink =
           'dart-steem-test-${getRandomString(7).toLowerCase()}';
       final body = [
-        '![picture](https://unsplash.it/1200/800?image=${~~(Random().nextDouble() * 1085).floor()}',
+        '![picture](https://unsplash.it/1200/800?image=${~~(Random().nextDouble() * 1085).floor()})',
         '\n---\n',
         Faker.paragraph,
         // lorem({count: ~~(1 + Math.random() * 10), units: 'paragraphs'}),

@@ -17,6 +17,7 @@ SignedTransaction signTransaction(
   String chainId = DEFAULT_CHAIN_ID,
 ]) {
   final digest = transactionDigest(transaction.toJson(), chainId);
+  print('digest: ${hex.encode(digest)}');
   var signatures = <String>[];
   for (final key in keys) {
     var signature = key.signHash(digest as Uint8List);
@@ -35,6 +36,7 @@ List<int> transactionDigest(Map<String, dynamic> transaction,
     var transactionSerializer = TransactionSerializer;
     transactionSerializer.appendByteBuffer(buffer, transaction);
     final transactionData = hex.encode(buffer.toBytes());
+    print('transactionData: $transactionData');
     final digest = sha256.convert([
       ...hex.decode(chainId),
       ...hex.decode(transactionData),

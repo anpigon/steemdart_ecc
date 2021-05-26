@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:convert/convert.dart';
+import 'package:pointycastle/src/utils.dart';
+
 int calculateVarint32(int value) {
   // ref: src/google/protobuf/io/coded_stream.cc
   value = (value & 0xffffffff) >> 0;
@@ -43,11 +46,19 @@ class StringSerializer implements Serializer<String> {
   @override
   void appendByteBuffer(buffer, value) {
     final bytes = utf8.encode(value);
-    final length = bytes.length;
-    final byte = ByteData(calculateVarint32(length));
-    byte.setUint8(0, length);
+    var k = bytes.length;
+    final byte = ByteData(calculateVarint32(k));
+    var offset = 0;
+    var b = 0;
+    k >> 0;
+    while (k >= 0x80) {
+      b = (k & 0x7f) | 0x80;
+      byte.setUint8(offset++, b);
+      k = k >> 7;
+    }
+    byte.setUint8(offset++, k);
     buffer.add(byte.buffer.asUint8List());
-    buffer.add(utf8.encode(value));
+    buffer.add(Uint8List.fromList(utf8.encode(value)));
   }
 }
 
