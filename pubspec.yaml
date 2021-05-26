@@ -1,6 +1,6 @@
 name: steemdart_ecc
 description: Elliptic curve cryptography functions in Dart. Private Key, Public Key, Signature, AES, Encryption, Decryption
-version: 0.4.3
+version: 0.4.3+1
 homepage: https://github.com/anpigon/steemdart_ecc
 
 environment:
