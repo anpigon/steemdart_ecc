@@ -4,8 +4,10 @@ import 'dart:math';
 import 'package:test/test.dart';
 import 'package:dotenv/dotenv.dart' show load, env;
 
-import '../lib/steemdart_ecc.dart';
-import '../lib/src/helpers/utils.dart';
+// ignore: avoid_relative_lib_imports
+import '../lib/steemdart_ecc.dart' show Client, SteemPrivateKey;
+// ignore: avoid_relative_lib_imports
+import '../lib/src/helpers/utils.dart' show getRandomString;
 
 void main() {
   load();
@@ -21,7 +23,7 @@ void main() {
           'dart-steem-test-${getRandomString(7).toLowerCase()}';
       final body =
           '![picture](https://unsplash.it/1200/800?image=${~~(Random().nextDouble() * 1085).floor()})';
-      final result = await client.broadcast?.comment({
+      final result = await client.broadcast.comment({
         'parent_author': '',
         'parent_permlink': 'test',
         'author': TEST_ACCOUNT,

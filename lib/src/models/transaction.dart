@@ -35,20 +35,20 @@ class Transaction {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
-      'expiration': this.expiration,
-      'extensions': this.extensions,
+      'expiration': expiration,
+      'extensions': extensions,
       'operations':
-          this.operations!.map<List>((operation) => operation.export()).toList(),
-      if (this.transaction_id != null) ...{
-        'transaction_id': this.transaction_id,
+          operations!.map<List>((operation) => operation.toJson()).toList(),
+      if (transaction_id != null) ...{
+        'transaction_id': transaction_id,
       },
-      if (this.transaction_num != null) ...{
-        'transaction_num': this.transaction_num,
+      if (transaction_num != null) ...{
+        'transaction_num': transaction_num,
       },
-      'ref_block_num': this.ref_block_num,
-      'ref_block_prefix': this.ref_block_prefix,
+      'ref_block_num': ref_block_num,
+      'ref_block_prefix': ref_block_prefix,
     };
   }
 }
@@ -66,7 +66,7 @@ class SignedTransaction extends Transaction {
         );
 
   factory SignedTransaction.fromMap(Map map) {
-    Transaction tx = Transaction.fromMap(map);
+    var tx = Transaction.fromMap(map);
     return SignedTransaction(
         tx,
         map['signatures'] is List
@@ -76,10 +76,11 @@ class SignedTransaction extends Transaction {
             : map['signatures']);
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return {
-      ...super.toMap(),
-      'signatures': this.signatures,
+      ...super.toJson(),
+      'signatures': signatures,
     };
   }
 }

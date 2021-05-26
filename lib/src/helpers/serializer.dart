@@ -4,16 +4,17 @@ import 'dart:typed_data';
 int calculateVarint32(int value) {
   // ref: src/google/protobuf/io/coded_stream.cc
   value = (value & 0xffffffff) >> 0;
-  if (value < 1 << 7)
+  if (value < 1 << 7) {
     return 1;
-  else if (value < 1 << 14)
+  } else if (value < 1 << 14) {
     return 2;
-  else if (value < 1 << 21)
+  } else if (value < 1 << 21) {
     return 3;
-  else if (value < 1 << 28)
+  } else if (value < 1 << 28) {
     return 4;
-  else
+  } else {
     return 5;
+  }
 }
 
 abstract class Serializer<T extends dynamic> {
@@ -23,7 +24,7 @@ abstract class Serializer<T extends dynamic> {
 class UInt16Serializer implements Serializer<int> {
   @override
   void appendByteBuffer(buffer, value) {
-    ByteData byte = ByteData(2);
+    final byte = ByteData(2);
     byte.setUint16(0, value, Endian.little);
     buffer.add(byte.buffer.asUint8List());
   }
@@ -32,7 +33,7 @@ class UInt16Serializer implements Serializer<int> {
 class UInt32Serializer implements Serializer<int> {
   @override
   void appendByteBuffer(buffer, value) {
-    ByteData byte = ByteData(4);
+    final byte = ByteData(4);
     byte.setUint32(0, value, Endian.little);
     buffer.add(byte.buffer.asUint8List());
   }
@@ -41,9 +42,9 @@ class UInt32Serializer implements Serializer<int> {
 class StringSerializer implements Serializer<String> {
   @override
   void appendByteBuffer(buffer, value) {
-    List<int> bytes = utf8.encode(value);
+    final bytes = utf8.encode(value);
     final length = bytes.length;
-    ByteData byte = ByteData(calculateVarint32(length));
+    final byte = ByteData(calculateVarint32(length));
     byte.setUint8(0, length);
     buffer.add(byte.buffer.asUint8List());
     buffer.add(utf8.encode(value));
@@ -56,7 +57,7 @@ class DateSerializer implements Serializer<String> {
     if (!value.endsWith('Z')) {
       value = '${value}Z';
     }
-    ByteData byte = ByteData(4);
+    final byte = ByteData(4);
     byte.setUint32(
         0,
         (DateTime.parse(value).millisecondsSinceEpoch / 1000).floor(),
@@ -74,7 +75,7 @@ class ArraySerializer implements Serializer<List<dynamic>> {
   void appendByteBuffer(buffer, values) {
     final data = values.length;
     final size = calculateVarint32(data);
-    final ByteData byte = ByteData(size);
+    final byte = ByteData(size);
     byte.setUint8(0, data);
 
     buffer.add(byte.buffer.asUint8List());
@@ -92,7 +93,7 @@ class ObjectSerializer implements Serializer<Map<String, dynamic>> {
   @override
   void appendByteBuffer(buffer, value) {
     for (final key in keySerializers.keys) {
-      Serializer serializer = keySerializers[key]!;
+      final serializer = keySerializers[key]!;
       try {
         serializer.appendByteBuffer(buffer, value[key]);
       } catch (error) {
@@ -115,7 +116,7 @@ class OperationSerializer implements Serializer<List<dynamic>> {
       final Map<String, dynamic> operationParam = operation[1];
       serializer.appendByteBuffer(buffer, operationParam);
     } catch (error) {
-      final message = '$operationName: ${error}';
+      final message = '$operationName: $error';
       throw Exception(message);
     }
   }
@@ -131,7 +132,7 @@ class OperationDataSerializer implements Serializer<Map<String, dynamic>> {
 
   @override
   void appendByteBuffer(buffer, value) {
-    final ByteData byte = ByteData(1);
+    final byte = ByteData(1);
     byte.setInt8(0, operationId);
     buffer.add(byte.buffer.asUint8List());
     _objectSerializer.appendByteBuffer(buffer, value);

@@ -1,6 +1,4 @@
-/**
- * Operation name.
- */
+/// Operation name.
 enum OperationName {
   account_create, // 9
   account_create_with_delegation,
@@ -52,9 +50,7 @@ enum OperationName {
   producer_reward
 }
 
-/**
- * Virtual operation name.
- */
+/// Virtual operation name.
 enum VirtualOperationName {
   author_reward, // 43
   comment_benefactor_reward, // 55
@@ -94,11 +90,7 @@ class Operation {
 
   const Operation(this._name, this.payload);
 
-  List toList() {
-    return [this._name, this.payload];
-  }
-
-  List export() {
-    return toList();
+  List toJson() {
+    return [_name, payload];
   }
 }

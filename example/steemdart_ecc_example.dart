@@ -1,25 +1,25 @@
 import 'package:steemdart_ecc/steemdart_ecc.dart';
 
-main() {
+void main() {
   // Construct the Steem private key from string
-  SteemPrivateKey privateKey = SteemPrivateKey.fromString(
+  final privateKey = SteemPrivateKey.fromString(
       '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3');
 
   // Get the related Steem public key
-  SteemPublicKey publicKey = privateKey.toPublicKey();
+  final publicKey = privateKey.toPublicKey();
   // Print the Steem public key
   print(publicKey.toString());
 
   // Going to sign the data
-  String data = 'data';
+  final data = 'data';
 
   // Sign
-  SteemSignature signature = privateKey.signString(data);
+  final signature = privateKey.signString(data);
   // Print the Steem signature
   print(signature.toString());
 
   // Recover the SteemPublicKey used to sign the data
-  var recoveredSteemPublicKey = signature.recover(data);
+  final recoveredSteemPublicKey = signature.recover(data);
   print(recoveredSteemPublicKey.toString());
 
   // Verify the data using the signature

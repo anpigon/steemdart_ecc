@@ -3,5 +3,6 @@ class InvalidKey implements Exception {
 
   InvalidKey(this.cause);
 
+  @override
   String toString() => cause;
 }

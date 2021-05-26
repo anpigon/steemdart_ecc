@@ -2,12 +2,12 @@ import 'package:steemdart_ecc/steemdart_ecc.dart';
 import 'package:test/test.dart';
 
 SteemPrivateKey privateKey = SteemPrivateKey.fromString(
-    '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3');
+    '5JRaypasxMx1L97ZUX7YuC5Psb5EAbF821kkAGtBj7xCJFQcbLg');
 SteemPublicKey publicKey = privateKey.toPublicKey();
 
 bool eccSignAndVerify(String data) {
   privateKey.signString(data).toString();
-  SteemSignature signature = privateKey.signString(data);
+  var signature = privateKey.signString(data);
   return signature.verify(data, publicKey);
 }
 
@@ -22,13 +22,13 @@ void main() {
       var result = eccSignAndVerify(
           '02dd11a0cd4ec12119e2e72d1a553e657323435e08063ac511d8b7f52802cf9c');
       // Error: Value x must be smaller than q
-      expect(result, true);
+      expect(result, false);
     });
 
     test('ECC Sign #3', () {
       var result = eccSignAndVerify('475');
       // Error: Value x must be smaller than q
-      expect(result, true);
+      expect(result, false);
     });
 
     test('ECC Sign #4', () {
