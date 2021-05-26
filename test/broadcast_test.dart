@@ -4,10 +4,8 @@ import 'dart:math';
 import 'package:test/test.dart';
 import 'package:dotenv/dotenv.dart' show load, env;
 
-// ignore: avoid_relative_lib_imports
-import '../lib/steemdart_ecc.dart' show Client, SteemPrivateKey;
-// ignore: avoid_relative_lib_imports
-import '../lib/src/helpers/utils.dart' show getRandomString;
+import 'package:steemdart_ecc/steemdart_ecc.dart';
+import 'package:steemdart_ecc/src/helpers/utils.dart';
 
 void main() {
   load();

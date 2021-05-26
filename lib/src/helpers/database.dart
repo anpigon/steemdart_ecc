@@ -13,6 +13,6 @@ class DatabaseAPI {
 
   Future<DynamicGlobalProperties> getDynamicGlobalProperties() async {
     return call('get_dynamic_global_properties')
-        .then((value) => DynamicGlobalProperties(value));
+        .then((value) => DynamicGlobalProperties.fromJson(value['result']));
   }
 }

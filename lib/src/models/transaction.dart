@@ -3,23 +3,23 @@ import './operation.dart';
 class Transaction {
   final String? transaction_id;
   final int? transaction_num;
-  final int? ref_block_num;
-  final int? ref_block_prefix;
-  final String? expiration;
-  final List<Operation>? operations;
-  final List? extensions;
+  final int ref_block_num;
+  final int ref_block_prefix;
+  final String expiration;
+  final List<Operation> operations;
+  final List extensions;
 
   const Transaction({
-    this.ref_block_num,
-    this.ref_block_prefix,
-    this.expiration,
-    this.operations,
-    this.extensions,
+    required this.ref_block_num,
+    required this.ref_block_prefix,
+    required this.expiration,
+    required this.operations,
+    required this.extensions,
     this.transaction_id,
     this.transaction_num,
   });
 
-  factory Transaction.fromMap(Map map) {
+  factory Transaction.fromJson(Map map) {
     return Transaction(
       transaction_id: map['transaction_id'],
       transaction_num: map['transaction_num'],
@@ -28,7 +28,7 @@ class Transaction {
       expiration: map['expiration'],
       operations: map['operations'] is List
           ? map['operations']
-              .map<Operation>((e) => Operation(e[0], e[1]))
+              .map<Operation>((e) => Operation.fromJson(e))
               .toList()
           : map['operations'],
       extensions: map['extensions'],
@@ -65,8 +65,8 @@ class SignedTransaction extends Transaction {
           extensions: tx.extensions,
         );
 
-  factory SignedTransaction.fromMap(Map map) {
-    var tx = Transaction.fromMap(map);
+  factory SignedTransaction.fromJson(Map<String, dynamic> map) {
+    var tx = Transaction.fromJson(map);
     return SignedTransaction(
         tx,
         map['signatures'] is List

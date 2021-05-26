@@ -69,12 +69,12 @@ enum VirtualOperationName {
 }
 
 class Operation {
-  final String? _name;
-  final Map<String, dynamic>? payload;
+  final String _name;
+  final Map<String, dynamic> payload;
 
   OperationName? get name {
     final _opName =
-        OperationName.values.where((e) => e.toString().endsWith(_name!));
+        OperationName.values.where((e) => e.toString().endsWith(_name));
     return _opName.isEmpty ? null : _opName.first;
   }
 
@@ -84,13 +84,15 @@ class Operation {
     return _opName.isEmpty ? null : _opName.first;
   }
 
-  String? get rawName {
+  String get rawName {
     return _name;
   }
 
   const Operation(this._name, this.payload);
 
+  factory Operation.fromJson(List<dynamic> json) => Operation(json[0], json[1]);
+
   List toJson() {
-    return [_name, payload];
+    return [rawName, payload];
   }
 }

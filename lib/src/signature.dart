@@ -127,11 +127,11 @@ class SteemSignature extends SteemKey {
   }
 
   Uint8List toBuffer() {
-    var b = <int?>[];
+    var b = <int>[];
     b.add(i);
     b.addAll(encodeBigInt(ecSig.r));
     b.addAll(encodeBigInt(ecSig.s));
-    var buffer = Uint8List.fromList(b as List<int>);
+    var buffer = Uint8List.fromList(b);
     return buffer;
   }
 

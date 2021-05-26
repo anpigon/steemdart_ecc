@@ -29,9 +29,9 @@ class BroadcastAPI {
   Future<Map<String, dynamic>> sendOperations(
       List<Operation> operations, SteemPrivateKey key) async {
     final props = await client.database.getDynamicGlobalProperties();
-    final ref_block_num = props.head_block_number! & 0xFFFF;
+    final ref_block_num = props.head_block_number & 0xFFFF;
     final ref_block_prefix = readUInt32LE(props.head_block_id, 4);
-    final expiration = DateTime.parse(props.time!)
+    final expiration = DateTime.parse(props.time)
         .add(Duration(milliseconds: expireTime))
         .toIso8601String()
         .substring(0, 19);
