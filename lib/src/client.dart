@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:math' as math;
 import 'package:http/http.dart' as http;
+import 'package:http/retry.dart';
 
 import './helpers/database.dart';
 import './helpers/broadcast.dart';
@@ -36,8 +38,17 @@ class Client {
     _broadcast = BroadcastAPI(this);
   }
 
-  Future<Map<String, dynamic>> call(String api, String method,
-      [var params]) async {
+  Future<Map<String, dynamic>> call(
+    String api,
+    String method,
+    dynamic params, {
+    int? retries,
+    bool Function(http.BaseResponse)? when,
+    bool Function(Object, StackTrace)? whenError,
+    Duration Function(int retryCount)? delay,
+    void Function(http.BaseRequest, http.BaseResponse?, int retryCount)?
+        onRetry,
+  }) async {
     try {
       final url = Uri.parse(address);
       final headers = <String, String>{
@@ -54,7 +65,18 @@ class Client {
         ],
       };
       final body = jsonEncode(request);
-      final response = await http.post(url, headers: headers, body: body);
+      final client = RetryClient(
+        http.Client(),
+        retries: retries ?? 3,
+        when:
+            when ?? (http.BaseResponse response) => response.statusCode == 503,
+        whenError: whenError ?? (Object error, StackTrace stackTrace) => false,
+        delay: delay ??
+            (int retryCount) =>
+                const Duration(milliseconds: 500) * math.pow(1.5, retryCount),
+        onRetry: onRetry,
+      );
+      final response = await client.post(url, headers: headers, body: body);
       if (response.statusCode == 200) {
         Map<String, dynamic> result = json.decode(response.body);
         assert(result['id'] == request['id'], 'got invalid response id');
