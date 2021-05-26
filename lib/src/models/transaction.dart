@@ -40,7 +40,7 @@ class Transaction {
       'expiration': expiration,
       'extensions': extensions,
       'operations':
-          operations!.map<List>((operation) => operation.toJson()).toList(),
+          operations.map<List>((operation) => operation.toJson()).toList(),
       if (transaction_id != null) ...{
         'transaction_id': transaction_id,
       },

@@ -80,7 +80,7 @@ class Operation {
 
   VirtualOperationName? get virtual {
     final _opName =
-        VirtualOperationName.values.where((e) => e.toString().endsWith(_name!));
+        VirtualOperationName.values.where((e) => e.toString().endsWith(_name));
     return _opName.isEmpty ? null : _opName.first;
   }
 
