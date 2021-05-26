@@ -1,3 +1,11 @@
+## 0.4.3+2
+
+- Accounts
+
+## 0.4.3+1
+
+- SteemPublicKey, SteemPrivateKey, SteemSignature
+
 ## 0.4.3
 
 - Clean up

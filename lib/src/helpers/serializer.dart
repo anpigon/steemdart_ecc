@@ -1,9 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:convert/convert.dart';
-import 'package:pointycastle/src/utils.dart';
-
 int calculateVarint32(int value) {
   // ref: src/google/protobuf/io/coded_stream.cc
   value = (value & 0xffffffff) >> 0;

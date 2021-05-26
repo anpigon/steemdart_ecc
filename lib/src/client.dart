@@ -54,7 +54,6 @@ class Client {
         ],
       };
       final body = jsonEncode(request);
-      print(body);
       final response = await http.post(url, headers: headers, body: body);
       if (response.statusCode == 200) {
         Map<String, dynamic> result = json.decode(response.body);

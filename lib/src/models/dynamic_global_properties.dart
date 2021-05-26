@@ -84,7 +84,7 @@ class DynamicGlobalProperties {
   final String sps_interval_ledger;
   final int downvote_pool_percent;
 
-  DynamicGlobalProperties({
+  const DynamicGlobalProperties({
     required this.head_block_number,
     required this.head_block_id,
     required this.time,
