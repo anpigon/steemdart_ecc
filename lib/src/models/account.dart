@@ -74,7 +74,7 @@ class Account {
   final String last_post;
   final String last_root_post;
   final String vesting_balance;
-  final String reputation;
+  final reputation; // int or String
   final List<dynamic> transfer_history;
   final List<dynamic> market_history;
   final List<dynamic> post_history;

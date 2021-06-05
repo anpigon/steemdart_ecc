@@ -12,5 +12,12 @@ void main() {
       assert(result.isNotEmpty);
       expect(result[0].name, username);
     });
+
+    test('getAccounts', () async {
+      final username = 'guest123';
+      final result = await client.database.getAccounts([username]);
+      assert(result.isNotEmpty);
+      expect(result[0].name, username);
+    });
   });
 }

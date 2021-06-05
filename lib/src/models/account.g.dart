@@ -77,7 +77,7 @@ Account _$AccountFromJson(Map<String, dynamic> json) {
     last_post: json['last_post'] as String,
     last_root_post: json['last_root_post'] as String,
     vesting_balance: json['vesting_balance'] as String,
-    reputation: json['reputation'] as String,
+    reputation: json['reputation'],
     transfer_history: json['transfer_history'] as List<dynamic>,
     market_history: json['market_history'] as List<dynamic>,
     post_history: json['post_history'] as List<dynamic>,
