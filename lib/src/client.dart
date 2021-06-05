@@ -5,6 +5,7 @@ import 'package:http/retry.dart';
 
 import './helpers/database.dart';
 import './helpers/broadcast.dart';
+import './helpers/rc.dart';
 
 /// Library version.
 const VERSION = '0.0.1';
@@ -27,6 +28,9 @@ class Client {
   late BroadcastAPI _broadcast;
   BroadcastAPI get broadcast => _broadcast;
 
+  late RCAPI _rc;
+  RCAPI get rc => _rc;
+
   Client(
     this.address, {
     this.chainId = DEFAULT_CHAIN_ID,
@@ -36,6 +40,7 @@ class Client {
 
     _database = DatabaseAPI(this);
     _broadcast = BroadcastAPI(this);
+    _rc = RCAPI(this);
   }
 
   Future<Map<String, dynamic>> call(

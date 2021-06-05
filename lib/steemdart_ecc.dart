@@ -8,3 +8,4 @@ export 'src/exception.dart';
 export 'src/client.dart';
 export 'src/models/account.dart';
 export 'src/models/dynamic_global_properties.dart';
+export 'src/models/rc_account.dart';
