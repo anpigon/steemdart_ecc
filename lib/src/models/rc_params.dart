@@ -11,7 +11,7 @@ class RCParams {
   final Resource resource_state_bytes;
   final Resource resource_execution_time;
 
-  RCParams(
+  const RCParams(
     this.resource_history_bytes,
     this.resource_new_accounts,
     this.resource_market_bytes,
@@ -30,7 +30,7 @@ class Resource {
   final DynamicParam resource_dynamics_params;
   final PriceCurveParam price_curve_params;
 
-  Resource(
+  const Resource(
     this.resource_dynamics_params,
     this.price_curve_params,
   );
@@ -50,7 +50,7 @@ class DynamicParam {
   final DecayParams decay_params;
   final int min_decay;
 
-  DynamicParam(
+  const DynamicParam(
     this.resource_unit,
     this.budget_per_time_unit,
     this.pool_eq,
@@ -67,10 +67,10 @@ class DynamicParam {
 
 @JsonSerializable()
 class DecayParams {
-  int decay_per_time_unit;
-  int decay_per_time_unit_denom_shift;
+  final int decay_per_time_unit;
+  final int decay_per_time_unit_denom_shift;
 
-  DecayParams(
+  const DecayParams(
     this.decay_per_time_unit,
     this.decay_per_time_unit_denom_shift,
   );
@@ -87,7 +87,7 @@ class PriceCurveParam {
   final coeff_b; // int or String
   final int shift;
 
-  PriceCurveParam(
+  const PriceCurveParam(
     this.coeff_a,
     this.coeff_b,
     this.shift,
@@ -107,7 +107,7 @@ class RCPool {
   final Pool resource_state_bytes;
   final Pool resource_execution_time;
 
-  RCPool(
+  const RCPool(
     this.resource_history_bytes,
     this.resource_new_accounts,
     this.resource_market_bytes,
@@ -124,7 +124,7 @@ class RCPool {
 class Pool {
   final pool; // int or String
 
-  Pool(
+  const Pool(
     this.pool,
   );
 

@@ -25,7 +25,7 @@ Map<String, dynamic> _$RCAccountToJson(RCAccount instance) => <String, dynamic>{
 
 RCManabar _$RCManabarFromJson(Map<String, dynamic> json) {
   return RCManabar(
-    current_mana: json['current_mana'] as String,
+    current_mana: json['current_mana'],
     last_update_time: json['last_update_time'] as int,
   );
 }

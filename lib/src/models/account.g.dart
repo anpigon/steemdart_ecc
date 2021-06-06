@@ -65,14 +65,12 @@ Account _$AccountFromJson(Map<String, dynamic> json) {
     received_vesting_shares: json['received_vesting_shares'] as String,
     vesting_withdraw_rate: json['vesting_withdraw_rate'] as String,
     next_vesting_withdrawal: json['next_vesting_withdrawal'] as String,
-    withdrawn: json['withdrawn'] as int,
-    to_withdraw: json['to_withdraw'] as int,
+    withdrawn: json['withdrawn'],
+    to_withdraw: json['to_withdraw'],
     withdraw_routes: json['withdraw_routes'] as int,
     curation_rewards: json['curation_rewards'] as int,
     posting_rewards: json['posting_rewards'] as int,
-    proxied_vsf_votes: (json['proxied_vsf_votes'] as List<dynamic>)
-        .map((e) => e as int)
-        .toList(),
+    proxied_vsf_votes: json['proxied_vsf_votes'] as List<dynamic>,
     witnesses_voted_for: json['witnesses_voted_for'] as int,
     last_post: json['last_post'] as String,
     last_root_post: json['last_root_post'] as String,
@@ -86,6 +84,8 @@ Account _$AccountFromJson(Map<String, dynamic> json) {
     witness_votes: json['witness_votes'] as List<dynamic>,
     tags_usage: json['tags_usage'] as List<dynamic>,
     guest_bloggers: json['guest_bloggers'] as List<dynamic>,
+    voting_manabar:
+        RCManabar.fromJson(json['voting_manabar'] as Map<String, dynamic>),
   );
 }
 
@@ -152,4 +152,5 @@ Map<String, dynamic> _$AccountToJson(Account instance) => <String, dynamic>{
       'witness_votes': instance.witness_votes,
       'tags_usage': instance.tags_usage,
       'guest_bloggers': instance.guest_bloggers,
+      'voting_manabar': instance.voting_manabar,
     };

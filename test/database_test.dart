@@ -19,5 +19,26 @@ void main() {
       assert(result.isNotEmpty);
       expect(result[0].name, username);
     });
+
+    test('getAccounts', () async {
+      final username = 'steemchiller';
+      final result = await client.database.getAccounts([username]);
+      assert(result.isNotEmpty);
+      expect(result[0].name, username);
+    });
+
+    test('getAccounts', () async {
+      final username = 'justyy';
+      final result = await client.database.getAccounts([username]);
+      assert(result.isNotEmpty);
+      expect(result[0].name, username);
+    });
+
+    test('getAccounts', () async {
+      final username = 'steem-agora';
+      final result = await client.database.getAccounts([username]);
+      assert(result.isNotEmpty);
+      expect(result[0].name, username);
+    });
   });
 }

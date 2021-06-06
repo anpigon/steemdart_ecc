@@ -1,5 +1,6 @@
 /// ref: https://developers.steem.io/apidefinitions/#condenser_api.get_accounts
 import 'package:json_annotation/json_annotation.dart';
+import 'package:steemdart_ecc/src/models/rc_account.dart';
 
 part 'account.g.dart';
 
@@ -64,12 +65,12 @@ class Account {
   final String received_vesting_shares;
   final String vesting_withdraw_rate;
   final String next_vesting_withdrawal;
-  final int withdrawn;
-  final int to_withdraw;
+  final withdrawn; // int or String
+  final to_withdraw; // int or String
   final int withdraw_routes;
   final int curation_rewards;
   final int posting_rewards;
-  final List<int> proxied_vsf_votes;
+  final List<dynamic> proxied_vsf_votes; // String or int
   final int witnesses_voted_for;
   final String last_post;
   final String last_root_post;
@@ -83,8 +84,9 @@ class Account {
   final List<dynamic> witness_votes;
   final List<dynamic> tags_usage;
   final List<dynamic> guest_bloggers;
+  final RCManabar voting_manabar;
 
-  Account({
+  const Account({
     required this.id,
     required this.name,
     required this.owner,
@@ -145,6 +147,7 @@ class Account {
     required this.witness_votes,
     required this.tags_usage,
     required this.guest_bloggers,
+    required this.voting_manabar,
   });
 
   factory Account.fromJson(Map<String, dynamic> json) =>

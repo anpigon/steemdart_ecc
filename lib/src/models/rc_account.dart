@@ -25,8 +25,15 @@ class RCAccount {
 
 @JsonSerializable()
 class RCManabar {
-  final String current_mana;
+  final current_mana; // int or String
   final int last_update_time;
+
+  int get currentMana {
+    if (current_mana is String) {
+      return int.parse(current_mana);
+    }
+    return current_mana;
+  }
 
   const RCManabar({
     required this.current_mana,
