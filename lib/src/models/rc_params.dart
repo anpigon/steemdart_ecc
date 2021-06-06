@@ -98,3 +98,37 @@ class PriceCurveParam {
 
   Map<String, dynamic> toJson() => _$PriceCurveParamToJson(this);
 }
+
+@JsonSerializable()
+class RCPool {
+  final Pool resource_history_bytes;
+  final Pool resource_new_accounts;
+  final Pool resource_market_bytes;
+  final Pool resource_state_bytes;
+  final Pool resource_execution_time;
+
+  RCPool(
+    this.resource_history_bytes,
+    this.resource_new_accounts,
+    this.resource_market_bytes,
+    this.resource_state_bytes,
+    this.resource_execution_time,
+  );
+
+  factory RCPool.fromJson(Map<String, dynamic> json) => _$RCPoolFromJson(json);
+
+  Map<String, dynamic> toJson() => _$RCPoolToJson(this);
+}
+
+@JsonSerializable()
+class Pool {
+  final pool; // int or String
+
+  Pool(
+    this.pool,
+  );
+
+  factory Pool.fromJson(Map<String, dynamic> json) => _$PoolFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PoolToJson(this);
+}

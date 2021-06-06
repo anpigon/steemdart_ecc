@@ -30,6 +30,12 @@ class RCAPI {
     return RCParams.fromJson(response['result']['resource_params']);
   }
 
+  Future<RCPool> getResourcePool() async {
+    final response = await call('get_resource_pool', {});
+    print(response);
+    return RCPool.fromJson(response['result']['resource_pool']);
+  }
+
   /// Makes a API call and returns the RC mana-data for a specified username
   Future getRCMana(String username) async {
     final rc_account = (await findRCAccounts([username]))[0];

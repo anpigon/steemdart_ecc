@@ -28,5 +28,11 @@ void main() {
       print(result.toJson());
       assert(result is RCParams);
     });
+
+    test('getResourcePool', () async {
+      final result = await client.rc.getResourcePool();
+      print(result.toJson());
+      assert(result is RCPool);
+    });
   });
 }

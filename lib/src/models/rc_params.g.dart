@@ -87,3 +87,31 @@ Map<String, dynamic> _$PriceCurveParamToJson(PriceCurveParam instance) =>
       'coeff_b': instance.coeff_b,
       'shift': instance.shift,
     };
+
+RCPool _$RCPoolFromJson(Map<String, dynamic> json) {
+  return RCPool(
+    Pool.fromJson(json['resource_history_bytes'] as Map<String, dynamic>),
+    Pool.fromJson(json['resource_new_accounts'] as Map<String, dynamic>),
+    Pool.fromJson(json['resource_market_bytes'] as Map<String, dynamic>),
+    Pool.fromJson(json['resource_state_bytes'] as Map<String, dynamic>),
+    Pool.fromJson(json['resource_execution_time'] as Map<String, dynamic>),
+  );
+}
+
+Map<String, dynamic> _$RCPoolToJson(RCPool instance) => <String, dynamic>{
+      'resource_history_bytes': instance.resource_history_bytes,
+      'resource_new_accounts': instance.resource_new_accounts,
+      'resource_market_bytes': instance.resource_market_bytes,
+      'resource_state_bytes': instance.resource_state_bytes,
+      'resource_execution_time': instance.resource_execution_time,
+    };
+
+Pool _$PoolFromJson(Map<String, dynamic> json) {
+  return Pool(
+    json['pool'],
+  );
+}
+
+Map<String, dynamic> _$PoolToJson(Pool instance) => <String, dynamic>{
+      'pool': instance.pool,
+    };
