@@ -7,7 +7,7 @@ part 'rc_account.g.dart';
 class RCAccount {
   final String account;
   final RCManabar rc_manabar;
-  final String max_rc;
+  final max_rc; // int or String
   final MaxRCCreationAdjustment max_rc_creation_adjustment;
 
   const RCAccount({

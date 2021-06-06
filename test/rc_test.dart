@@ -47,7 +47,8 @@ void main() {
         'guest123',
         'steemchiller',
         'justyy',
-        'steem-agora'
+        'steem-agora',
+        'superman',
       ];
       final accounts = await client.database.getAccounts(usernames);
 
@@ -57,8 +58,13 @@ void main() {
       }
     });
 
+    test('getVPMana', () async {
+      final vpmana = await client.rc.getVPMana('steem-agora');
+      print('${vpmana.percentage}');
+    });
+
     test('getRCMana', () async {
-      final rcmana = await client.rc.getVPMana('steem-agora');
+      final rcmana = await client.rc.getRCMana('superman');
       print('${rcmana.percentage}');
     });
   });

@@ -10,7 +10,7 @@ RCAccount _$RCAccountFromJson(Map<String, dynamic> json) {
   return RCAccount(
     account: json['account'] as String,
     rc_manabar: RCManabar.fromJson(json['rc_manabar'] as Map<String, dynamic>),
-    max_rc: json['max_rc'] as String,
+    max_rc: json['max_rc'],
     max_rc_creation_adjustment: MaxRCCreationAdjustment.fromJson(
         json['max_rc_creation_adjustment'] as Map<String, dynamic>),
   );
