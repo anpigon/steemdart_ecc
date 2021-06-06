@@ -1,3 +1,4 @@
+import 'package:steemdart_ecc/src/models/rc_params.dart';
 import 'package:test/test.dart';
 
 import 'package:steemdart_ecc/steemdart_ecc.dart';
@@ -20,6 +21,12 @@ void main() {
       print(result[0].toJson());
       assert(result.isNotEmpty);
       expect(result[0].account, username);
+    });
+
+    test('getResourceParams', () async {
+      final result = await client.rc.getResourceParams();
+      print(result.toJson());
+      assert(result is RCParams);
     });
   });
 }

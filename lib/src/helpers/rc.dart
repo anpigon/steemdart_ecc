@@ -1,6 +1,8 @@
 import 'dart:core';
+
 import '../client.dart';
 import '../models/rc_account.dart';
+import '../models/rc_params.dart';
 
 class RCAPI {
   final Client client;
@@ -20,6 +22,12 @@ class RCAPI {
           .map((account) => RCAccount.fromJson(account))
           .toList();
     });
+  }
+
+  /// Returns the global resource params
+  Future<RCParams> getResourceParams() async {
+    final response = await call('get_resource_params', {});
+    return RCParams.fromJson(response['result']['resource_params']);
   }
 
   /// Makes a API call and returns the RC mana-data for a specified username

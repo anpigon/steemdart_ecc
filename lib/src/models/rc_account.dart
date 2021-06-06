@@ -1,10 +1,9 @@
+/// ref: https://developers.steem.io/apidefinitions/rc-api#rc_api.find_rc_accounts
 import 'package:json_annotation/json_annotation.dart';
 
 part 'rc_account.g.dart';
 
 @JsonSerializable()
-
-/// ref: https://developers.steem.io/apidefinitions/rc-api#rc_api.find_rc_accounts
 class RCAccount {
   final String account;
   final RCManabar rc_manabar;
