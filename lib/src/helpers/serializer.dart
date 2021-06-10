@@ -1,5 +1,10 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'dart:math' as math;
+
+import 'package:buffer/buffer.dart';
+
+import '../models/asset.dart';
 
 int calculateVarint32(int value) {
   // ref: src/google/protobuf/io/coded_stream.cc
@@ -143,6 +148,23 @@ class OperationDataSerializer implements Serializer<Map<String, dynamic>> {
   }
 }
 
+class AssetSerializer implements Serializer<String> {
+  @override
+  void appendByteBuffer(BytesBuilder buffer, String value) {
+    final asset = Asset.from(value);
+    final precision = asset.getPrecision();
+
+    final _buffer = ByteDataWriter(endian: Endian.little);
+    _buffer.writeInt16((asset.amount * math.pow(10, precision)).round());
+    _buffer.writeUint8(precision);
+    for (var i = 0, l = asset.symbol.length; i < 7; i++) {
+      _buffer.writeUint8(i < l ? asset.symbol.codeUnitAt(i) : 0);
+    }
+
+    buffer.add(_buffer.toBytes());
+  }
+}
+
 final Map<String, Serializer> OperationSerializers = {
   'comment': OperationDataSerializer(1, {
     'parent_author': StringSerializer(),
@@ -152,6 +174,12 @@ final Map<String, Serializer> OperationSerializers = {
     'title': StringSerializer(),
     'body': StringSerializer(),
     'json_metadata': StringSerializer(),
+  }),
+  'transfer': OperationDataSerializer(2, {
+    'from': StringSerializer(),
+    'to': StringSerializer(),
+    'amount': AssetSerializer(),
+    'memo': StringSerializer(),
   })
 };
 

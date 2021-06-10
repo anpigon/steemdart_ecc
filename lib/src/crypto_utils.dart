@@ -41,6 +41,7 @@ List<int> transactionDigest(Map<String, dynamic> transaction,
     ]).bytes;
     return digest;
   } catch (cause) {
+    print(cause);
     throw Exception('Unable to serialize transaction');
   }
 }

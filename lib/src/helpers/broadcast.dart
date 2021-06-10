@@ -23,6 +23,15 @@ class BroadcastAPI {
     return await sendOperations([op], key);
   }
 
+  /// Broadcast a transfer.
+  /// @param data The transfer operation payload.
+  /// @param key Private active key of sender.
+  Future<Map<String, dynamic>> transfer(
+      Map<String, dynamic> data, SteemPrivateKey key) async {
+    final op = Operation('transfer', data);
+    return await sendOperations([op], key);
+  }
+
   /// Sign and broadcast transaction with operations to the network. Throws if the transaction expires.
   /// @param operations List of operations to send.
   /// @param key Private key(s) used to sign transaction.
