@@ -11,9 +11,9 @@ class Asset {
 
   /// Create a new Asset instance from a string, e.g. `42.000 STEEM`.
   static Asset fromString(String string, [String? expectedSymbol]) {
-    final splitedString = string.split(' ');
-    final amountString = splitedString[0];
-    final symbol = splitedString[1];
+    final splitString = string.split(' ');
+    final amountString = splitString[0];
+    final symbol = splitString[1];
     if (!AssetSymbol.contains(symbol)) {
       throw Exception('Invalid asset symbol: $symbol');
     }

@@ -148,6 +148,9 @@ class OperationDataSerializer implements Serializer<Map<String, dynamic>> {
   }
 }
 
+/// Serialize asset.
+/// @note This looses precision for amounts larger than 2^53-1/10^precision.
+///       Should not be a problem in real-word usage.
 class AssetSerializer implements Serializer<String> {
   @override
   void appendByteBuffer(BytesBuilder buffer, String value) {
@@ -155,7 +158,7 @@ class AssetSerializer implements Serializer<String> {
     final precision = asset.getPrecision();
 
     final _buffer = ByteDataWriter(endian: Endian.little);
-    _buffer.writeInt16((asset.amount * math.pow(10, precision)).round());
+    _buffer.writeInt64((asset.amount * math.pow(10, precision)).round());
     _buffer.writeUint8(precision);
     for (var i = 0, l = asset.symbol.length; i < 7; i++) {
       _buffer.writeUint8(i < l ? asset.symbol.codeUnitAt(i) : 0);

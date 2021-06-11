@@ -128,5 +128,26 @@ void main() {
       final result = hex.encode(buffer.toBytes());
       expect(result, expected);
     });
+
+    test('OperationSerializer: transfer', () {
+      final expected =
+          '0207616e7069676f6e07616e7069676f6e010000000000000003535445454d00000e7465737420746573742074657374';
+      // operationId: 02
+      // from: 07 616e7069676f6e
+      // to: 07 616e7069676f6e
+      // amount: 010000000000000003535445454d0000
+      // memo: 0e 7465737420746573742074657374
+      final value = {
+        'from': 'anpigon',
+        'to': 'anpigon',
+        'amount': '0.001 STEEM',
+        'memo': 'test test test',
+      };
+      final buffer = BytesBuilder();
+      final serializer = OperationSerializers['transfer'];
+      serializer!.appendByteBuffer(buffer, value);
+      final result = hex.encode(buffer.toBytes());
+      expect(result, expected);
+    });
   });
 }

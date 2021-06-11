@@ -21,7 +21,7 @@ void main() {
         'amount': '0.001 STEEM',
         'memo': 'test test test',
       }, privateKey);
-      // print(response);
+      print(response);
     });
   });
 }
