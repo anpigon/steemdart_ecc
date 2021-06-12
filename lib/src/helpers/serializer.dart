@@ -1,12 +1,12 @@
 import 'dart:convert';
-import 'dart:typed_data';
 import 'dart:math' as math;
+import 'dart:typed_data';
 
 import 'package:buffer/buffer.dart';
 
 import '../models/asset.dart';
 
-int calculateVarint32(int value) {
+int calculateVarInt32(int value) {
   // ref: src/google/protobuf/io/coded_stream.cc
   value = (value & 0xffffffff) >> 0;
   if (value < 1 << 7) {
@@ -22,8 +22,8 @@ int calculateVarint32(int value) {
   }
 }
 
-Uint8List byteVarint32(int value) {
-  final byte = ByteData(calculateVarint32(value));
+Uint8List byteVarInt32(int value) {
+  final byte = ByteData(calculateVarInt32(value));
   var offset = 0;
   var b = 0;
   value >> 0;
@@ -62,8 +62,8 @@ class StringSerializer implements Serializer<String> {
   @override
   void appendByteBuffer(buffer, value) {
     final bytes = utf8.encode(value);
-    buffer.add(byteVarint32(bytes.length));
-    buffer.add(Uint8List.fromList(bytes));
+    buffer.add(byteVarInt32(bytes.length));
+    buffer.add(Uint8List.fromList(bytes) ?? [0]);
   }
 }
 
@@ -74,11 +74,10 @@ class DateSerializer implements Serializer<String> {
       value = '${value}Z';
     }
     final byte = ByteData(4);
-    byte.setUint32(
-        0,
-        (DateTime.parse(value).millisecondsSinceEpoch / 1000).floor(),
-        Endian.little);
-    buffer.add(byte.buffer.asUint8List());
+    final _value =
+        (DateTime.parse(value).millisecondsSinceEpoch / 1000).floor();
+    byte.setUint32(0, _value, Endian.little);
+    buffer.add(byte.buffer.asInt8List());
   }
 }
 
@@ -89,7 +88,7 @@ class ArraySerializer implements Serializer<List<dynamic>> {
 
   @override
   void appendByteBuffer(buffer, values) {
-    buffer.add(byteVarint32(values.length));
+    buffer.add(byteVarInt32(values.length));
     for (final value in values) {
       itemSerializer.appendByteBuffer(buffer, value);
     }
@@ -143,7 +142,7 @@ class OperationDataSerializer implements Serializer<Map<String, dynamic>> {
 
   @override
   void appendByteBuffer(buffer, value) {
-    buffer.add(byteVarint32(operationId));
+    buffer.add(byteVarInt32(operationId));
     _objectSerializer.appendByteBuffer(buffer, value);
   }
 }
