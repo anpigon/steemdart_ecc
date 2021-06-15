@@ -67,5 +67,10 @@ void main() {
       final result = await client.database.getVestingDelegations('anpigon');
       print(result[0].toJson());
     });
+
+    test('getConfig', () async {
+      final result = await client.database.getConfig();
+      print(result);
+    });
   });
 }

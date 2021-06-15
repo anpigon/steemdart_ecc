@@ -29,8 +29,8 @@ class DatabaseAPI {
   /// Return all of the state required for a particular url path.
   /// @param path Path component of url conforming to condenser's scheme
   ///             e.g. `@almost-digital` or `trending/travel`
-  Future<Map> getState(String path) async {
-    return await call('get_state', [path]);
+  Future<Map<String, dynamic>> getState(String path) async {
+    return await call('get_state', [path]).then((value) => value['result']);
   }
 
   /// Get list of delegations made by account.
@@ -43,9 +43,16 @@ class DatabaseAPI {
     int limit = 1000,
   }) async {
     return await call('get_vesting_delegations', [account, from, limit]).then(
-      (value) =>
-          value['result'].map<VestingDelegation>((item) => VestingDelegation.from(item)).toList(),
+      (value) => value['result']
+          .map<VestingDelegation>((item) => VestingDelegation.from(item))
+          .toList(),
     );
+  }
+
+  /// Return server config. See:
+  /// https://github.com/steemit/steem/blob/master/libraries/protocol/include/steemit/protocol/config.hpp
+  Future<Map<String, dynamic>> getConfig() async {
+    return await call('get_config').then((value) => value['result']);
   }
 
   /// Return array of account info objects for the usernames passed.
