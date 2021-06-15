@@ -149,5 +149,9 @@ void main() {
       final result = hex.encode(buffer.toBytes());
       expect(result, expected);
     });
+
+    test('', () {
+      // {expiration: 2021-06-12T11:46:27, extensions: [], operations: [[transfer, {from: wangpigon, to: wangpigon, amount: 0.001 STEEM, memo: }]], ref_block_num: 37629, ref_block_prefix: 3966266598}
+    });
   });
 }

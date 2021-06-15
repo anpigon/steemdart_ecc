@@ -47,5 +47,11 @@ void main() {
       assert(result.isNotEmpty);
       expect(result[0].name, username);
     });
+
+    test('getChainProperties', () async {
+      final username = 'superman';
+      final result = await client.database.getChainProperties();
+      print(result.toJson());
+    });
   });
 }

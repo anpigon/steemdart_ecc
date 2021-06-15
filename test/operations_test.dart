@@ -19,7 +19,7 @@ void main() {
         'from': accounts[0].name,
         'to': accounts[0].name,
         'amount': '0.001 STEEM',
-        'memo': 'test test test',
+        'memo': '',
       }, privateKey);
       print(response);
     });

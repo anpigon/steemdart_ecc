@@ -1,5 +1,7 @@
+
 import '../client.dart';
 import '../models/account.dart';
+import '../models/chain_properties.dart';
 import '../models/dynamic_global_properties.dart';
 
 class DatabaseAPI {
@@ -16,6 +18,12 @@ class DatabaseAPI {
   Future<DynamicGlobalProperties> getDynamicGlobalProperties() async {
     return await call('get_dynamic_global_properties')
         .then((value) => DynamicGlobalProperties.fromJson(value['result']));
+  }
+
+  /// Return median chain properties decided by witness.
+  Future<ChainProperties> getChainProperties() async {
+    return await call('get_chain_properties')
+        .then((value) => ChainProperties.fromJson(value['result']));
   }
 
   /// Return array of account info objects for the usernames passed.
