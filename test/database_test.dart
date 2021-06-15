@@ -62,5 +62,10 @@ void main() {
       final result = await client.database.getState('@almost-digital');
       print(result);
     });
+
+    test('getVestingDelegations', () async {
+      final result = await client.database.getVestingDelegations('anpigon');
+      print(result[0].toJson());
+    });
   });
 }

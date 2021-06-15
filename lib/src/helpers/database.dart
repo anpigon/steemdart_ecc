@@ -1,8 +1,8 @@
-
 import '../client.dart';
 import '../models/account.dart';
 import '../models/chain_properties.dart';
 import '../models/dynamic_global_properties.dart';
+import '../models/vesting_delegation.dart';
 
 class DatabaseAPI {
   final Client client;
@@ -31,6 +31,21 @@ class DatabaseAPI {
   ///             e.g. `@almost-digital` or `trending/travel`
   Future<Map> getState(String path) async {
     return await call('get_state', [path]);
+  }
+
+  /// Get list of delegations made by account.
+  /// @param account Account delegating
+  /// @param from Delegatee start offset, used for paging.
+  /// @param limit Number of results, max 1000.
+  Future<List<VestingDelegation>> getVestingDelegations(
+    String account, {
+    String from = '',
+    int limit = 1000,
+  }) async {
+    return await call('get_vesting_delegations', [account, from, limit]).then(
+      (value) =>
+          value['result'].map<VestingDelegation>((item) => VestingDelegation.from(item)).toList(),
+    );
   }
 
   /// Return array of account info objects for the usernames passed.
