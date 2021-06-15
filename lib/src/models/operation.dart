@@ -1,3 +1,8 @@
+
+import 'package:json_annotation/json_annotation.dart';
+
+part 'operation.g.dart';
+
 /// Operation name.
 enum OperationName {
   account_create, // 9
@@ -95,4 +100,30 @@ class Operation {
   List toJson() {
     return [rawName, payload];
   }
+}
+
+@JsonSerializable()
+class AppliedOperation {
+  final String trx_id;
+  final int block;
+  final int trx_in_block;
+  final int op_in_trx;
+  final int virtual_op;
+  final String timestamp;
+  final Operation op;
+
+  AppliedOperation({
+    required this.trx_id,
+    required this.block,
+    required this.trx_in_block,
+    required this.op_in_trx,
+    required this.virtual_op,
+    required this.timestamp,
+    required this.op,
+  });
+
+  factory AppliedOperation.fromJson(Map<String, dynamic> json) =>
+      _$AppliedOperationFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AppliedOperationToJson(this);
 }

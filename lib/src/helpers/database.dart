@@ -3,6 +3,7 @@ import '../models/account.dart';
 import '../models/block.dart';
 import '../models/chain_properties.dart';
 import '../models/dynamic_global_properties.dart';
+import '../models/operation.dart';
 import '../models/vesting_delegation.dart';
 
 class DatabaseAPI {
@@ -66,6 +67,15 @@ class DatabaseAPI {
   Future<SignedBlock> getBlock(int blockNum) async {
     return await call('get_block', [blockNum])
         .then((value) => SignedBlock.fromJson(value['result']));
+  }
+
+  Future<AppliedOperation> getOperations(int blockNum,
+      {bool onlyVirtual = false}) async {
+    return await call('get_ops_in_block', [blockNum, onlyVirtual]).then(
+      (value) => value['result']
+          .map<AppliedOperation>((item) => AppliedOperation.fromJson(item))
+          .toList(),
+    );
   }
 
   /// Return array of account info objects for the usernames passed.

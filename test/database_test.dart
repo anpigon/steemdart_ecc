@@ -82,5 +82,10 @@ void main() {
       final result = await client.database.getBlock(54652519);
       print(result.toJson());
     });
+
+    test('getOperations', () async {
+      final result = await client.database.getOperations(54652519);
+      print(result.toJson());
+    });
   });
 }
