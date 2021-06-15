@@ -1,7 +1,6 @@
-
 import '../client.dart';
 import '../models/account.dart';
-import '../models/block_header.dart';
+import '../models/block.dart';
 import '../models/chain_properties.dart';
 import '../models/dynamic_global_properties.dart';
 import '../models/vesting_delegation.dart';
@@ -46,7 +45,7 @@ class DatabaseAPI {
   }) async {
     return await call('get_vesting_delegations', [account, from, limit]).then(
       (value) => value['result']
-          .map<VestingDelegation>((item) => VestingDelegation.from(item))
+          .map<VestingDelegation>((item) => VestingDelegation.fromJson(item))
           .toList(),
     );
   }
@@ -59,7 +58,14 @@ class DatabaseAPI {
 
   /// Return header for *blockNum*.
   Future<BlockHeader> getBlockHeader(int blockNum) async {
-    return await call('get_block_header', [blockNum]).then((value) => BlockHeader.from(value['result']));
+    return await call('get_block_header', [blockNum])
+        .then((value) => BlockHeader.fromJson(value['result']));
+  }
+
+  /// Return block *blockNum*.
+  Future<SignedBlock> getBlock(int blockNum) async {
+    return await call('get_block', [blockNum])
+        .then((value) => SignedBlock.fromJson(value['result']));
   }
 
   /// Return array of account info objects for the usernames passed.

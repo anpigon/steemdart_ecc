@@ -22,7 +22,7 @@ class VestingDelegation {
     required this.min_delegation_time,
   });
 
-  factory VestingDelegation.from(Map<String, dynamic> json) =>
+  factory VestingDelegation.fromJson(Map<String, dynamic> json) =>
       VestingDelegation(
         id: json['id'],
         delegator: json['delegator'],
