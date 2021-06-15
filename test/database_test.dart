@@ -49,9 +49,18 @@ void main() {
     });
 
     test('getChainProperties', () async {
-      final username = 'superman';
       final result = await client.database.getChainProperties();
       print(result.toJson());
+    });
+
+    test('getState', () async {
+      final result = await client.database.getState('trending/travel');
+      print(result);
+    });
+
+    test('getState 2', () async {
+      final result = await client.database.getState('@almost-digital');
+      print(result);
     });
   });
 }

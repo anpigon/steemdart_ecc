@@ -26,6 +26,13 @@ class DatabaseAPI {
         .then((value) => ChainProperties.fromJson(value['result']));
   }
 
+  /// Return all of the state required for a particular url path.
+  /// @param path Path component of url conforming to condenser's scheme
+  ///             e.g. `@almost-digital` or `trending/travel`
+  Future<Map> getState(String path) async {
+    return await call('get_state', [path]);
+  }
+
   /// Return array of account info objects for the usernames passed.
   /// @param usernames The accounts to fetch.
   Future<List<Account>> getAccounts(List<String> usernames) async {
