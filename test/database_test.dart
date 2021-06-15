@@ -72,5 +72,10 @@ void main() {
       final result = await client.database.getConfig();
       print(result);
     });
+
+    test('getBlockHeader', () async {
+      final result = await client.database.getBlockHeader(54652519);
+      print(result.toJson());
+    });
   });
 }

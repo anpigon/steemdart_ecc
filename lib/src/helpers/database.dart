@@ -1,5 +1,7 @@
+
 import '../client.dart';
 import '../models/account.dart';
+import '../models/block_header.dart';
 import '../models/chain_properties.dart';
 import '../models/dynamic_global_properties.dart';
 import '../models/vesting_delegation.dart';
@@ -53,6 +55,11 @@ class DatabaseAPI {
   /// https://github.com/steemit/steem/blob/master/libraries/protocol/include/steemit/protocol/config.hpp
   Future<Map<String, dynamic>> getConfig() async {
     return await call('get_config').then((value) => value['result']);
+  }
+
+  /// Return header for *blockNum*.
+  Future<BlockHeader> getBlockHeader(int blockNum) async {
+    return await call('get_block_header', [blockNum]).then((value) => BlockHeader.from(value['result']));
   }
 
   /// Return array of account info objects for the usernames passed.
