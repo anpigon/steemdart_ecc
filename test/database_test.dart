@@ -1,6 +1,5 @@
-import 'package:test/test.dart';
-
 import 'package:steemdart_ecc/steemdart_ecc.dart';
+import 'package:test/test.dart';
 
 void main() {
   final client = Client('https://api.steemit.com');
@@ -85,7 +84,25 @@ void main() {
 
     test('getOperations', () async {
       final result = await client.database.getOperations(54652519);
-      print(result.toJson());
+      print(result[0].toJson());
+    });
+
+    test('getDiscussions by feed', () async {
+      final result = await client.database.getDiscussions(
+        'feed',
+        tag: 'anpigon',
+        limit: 10,
+      );
+      print(result[0].toJson());
+    });
+
+    test('getDiscussions by created', () async {
+      final result = await client.database.getDiscussions(
+        'created',
+        tag: 'kr',
+        limit: 10,
+      );
+      print(result[0].toJson());
     });
   });
 }

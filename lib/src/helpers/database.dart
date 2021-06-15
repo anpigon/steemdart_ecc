@@ -2,6 +2,7 @@ import '../client.dart';
 import '../models/account.dart';
 import '../models/block.dart';
 import '../models/chain_properties.dart';
+import '../models/comment.dart';
 import '../models/dynamic_global_properties.dart';
 import '../models/operation.dart';
 import '../models/vesting_delegation.dart';
@@ -69,12 +70,63 @@ class DatabaseAPI {
         .then((value) => SignedBlock.fromJson(value['result']));
   }
 
-  Future<AppliedOperation> getOperations(int blockNum,
+  Future<List<AppliedOperation>> getOperations(int blockNum,
       {bool onlyVirtual = false}) async {
     return await call('get_ops_in_block', [blockNum, onlyVirtual]).then(
       (value) => value['result']
           .map<AppliedOperation>((item) => AppliedOperation.fromJson(item))
           .toList(),
+    );
+  }
+
+  Future<List<Discussion>> getDiscussions(
+    String by, {
+    required String tag,
+    int limit = 100, // Number of results, max 100.
+    List<String>? filter_tags,
+    List<String>? select_authors,
+    List<String>? select_tags,
+    int?
+        truncate_body, // Number of bytes of post body to fetch, default 0 (all)
+    String? start_author, // Name of author to start from, used for paging.
+    String? start_permlink, // Permalink of post to start from, used for paging.
+    String? parent_author,
+    String? parent_permlink,
+  }) async {
+    assert([
+      'active',
+      'blog',
+      'cashout',
+      'children',
+      'comments',
+      'feed',
+      'hot',
+      'promoted',
+      'trending',
+      'votes',
+      'created'
+    ].contains(by));
+    assert(limit <= 100);
+    return await call('get_discussions_by_$by', [
+      {
+        'tag': tag,
+        'limit': limit,
+        'filter_tags': filter_tags,
+        'select_authors': select_authors,
+        'select_tags': select_tags,
+        'truncate_body': truncate_body,
+        'start_author': start_author,
+        'start_permlink': start_permlink,
+        'parent_author': parent_author,
+        'parent_permlink': parent_permlink,
+      }
+    ]).then(
+      (value) {
+        print(value['result']);
+        return value['result']
+            .map<Discussion>((item) => Discussion.fromJson(item))
+            .toList();
+      }
     );
   }
 
