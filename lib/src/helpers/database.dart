@@ -1,11 +1,5 @@
 import '../client.dart';
-import '../models/account.dart';
-import '../models/block.dart';
-import '../models/chain_properties.dart';
-import '../models/comment.dart';
-import '../models/dynamic_global_properties.dart';
-import '../models/operation.dart';
-import '../models/vesting_delegation.dart';
+import '../models/models.dart';
 
 class DatabaseAPI {
   final Client client;
@@ -120,14 +114,12 @@ class DatabaseAPI {
         'parent_author': parent_author,
         'parent_permlink': parent_permlink,
       }
-    ]).then(
-      (value) {
-        print(value['result']);
-        return value['result']
-            .map<Discussion>((item) => Discussion.fromJson(item))
-            .toList();
-      }
-    );
+    ]).then((value) {
+      print(value['result']);
+      return value['result']
+          .map<Discussion>((item) => Discussion.fromJson(item))
+          .toList();
+    });
   }
 
   /// Return array of account info objects for the usernames passed.
@@ -138,5 +130,11 @@ class DatabaseAPI {
           .map((account) => Account.fromJson(account))
           .toList();
     });
+  }
+
+  /// Verify signed transaction.
+  Future verifyAuthority(SignedTransaction stx) async {
+    return await call('verify_authority', [stx])
+        .then((value) => value['result']);
   }
 }

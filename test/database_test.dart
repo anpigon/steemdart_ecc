@@ -1,7 +1,13 @@
-import 'package:steemdart_ecc/steemdart_ecc.dart';
 import 'package:test/test.dart';
+import 'package:dotenv/dotenv.dart' show load, env;
+import 'package:steemdart_ecc/steemdart_ecc.dart';
 
 void main() {
+  load();
+
+  final TEST_ACCOUNT = env['TEST_ACCOUNT'];
+  final TEST_ACTIVITY_KEY = env['TEST_ACTIVITY_KEY'];
+
   final client = Client('https://api.steemit.com');
 
   group('database api', () {
@@ -103,6 +109,35 @@ void main() {
         limit: 10,
       );
       print(result[0].toJson());
+    });
+
+    test('verifyAuthority', () async {
+      final tx = Transaction(
+        ref_block_num: 0,
+        ref_block_prefix: 0,
+        expiration: '2000-01-01T00:00:00',
+        operations: [
+          Operation('custom_json', {
+            'required_auths': [],
+            'required_posting_auths': [TEST_ACCOUNT!],
+            'id': 'rpc-params',
+            'json': '{"foo": "bar"}'
+          })
+        ],
+        extensions: [],
+      );
+      final key = SteemPrivateKey.fromString(TEST_ACTIVITY_KEY!);
+      final stx = client.broadcast.sign(tx, key);
+      final rv = await client.database.verifyAuthority(stx);
+      assert(rv == true);
+      final bogusKey = SteemPrivateKey.fromSeed('ogus');
+      try {
+        await client.database
+            .verifyAuthority(client.broadcast.sign(tx, bogusKey));
+        assert(false, 'should not be reached');
+      } catch (error) {
+        expect(error.toString(), 'Missing Posting Authority ${TEST_ACCOUNT!}');
+      }
     });
   });
 }
