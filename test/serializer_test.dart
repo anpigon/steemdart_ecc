@@ -150,6 +150,22 @@ void main() {
       expect(result, expected);
     });
 
+    test('OperationSerializer: transfer empty memo', () {
+      final expected =
+          '0207616e7069676f6e07616e7069676f6e010000000000000003535445454d000000';
+      final value = {
+        'from': 'anpigon',
+        'to': 'anpigon',
+        'amount': '0.001 STEEM',
+        'memo': '',
+      };
+      final buffer = BytesBuilder();
+      final serializer = OperationSerializers['transfer'];
+      serializer!.appendByteBuffer(buffer, value);
+      final result = hex.encode(buffer.toBytes());
+      expect(result, expected);
+    });
+
     test('', () {
       // {expiration: 2021-06-12T11:46:27, extensions: [], operations: [[transfer, {from: wangpigon, to: wangpigon, amount: 0.001 STEEM, memo: }]], ref_block_num: 37629, ref_block_prefix: 3966266598}
     });

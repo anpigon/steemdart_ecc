@@ -62,8 +62,12 @@ class StringSerializer implements Serializer<String> {
   @override
   void appendByteBuffer(buffer, value) {
     final bytes = utf8.encode(value);
+    if(bytes.length == 0) {
+      buffer.addByte(0);
+      return;
+    }
     buffer.add(byteVarInt32(bytes.length));
-    buffer.add(Uint8List.fromList(bytes) ?? [0]);
+    buffer.add(Uint8List.fromList(bytes));
   }
 }
 
