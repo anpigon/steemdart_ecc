@@ -130,13 +130,15 @@ void main() {
       final stx = client.broadcast.sign(tx, key);
       final rv = await client.database.verifyAuthority(stx);
       assert(rv == true);
-      final bogusKey = SteemPrivateKey.fromSeed('ogus');
+
+      final bogusKey = SteemPrivateKey.fromString(
+          '5JRaypasxMx1L97ZUX7YuC5Psb5EAbF821kkAGtBj7xCJFQcbLg');
       try {
         await client.database
             .verifyAuthority(client.broadcast.sign(tx, bogusKey));
         assert(false, 'should not be reached');
       } catch (error) {
-        expect(error.toString(), 'Missing Posting Authority ${TEST_ACCOUNT!}');
+        assert(error.toString().contains('Missing Posting Authority ${TEST_ACCOUNT!}'));
       }
     });
   });

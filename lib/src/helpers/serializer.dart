@@ -182,7 +182,22 @@ final Map<String, Serializer> OperationSerializers = {
     'to': StringSerializer(),
     'amount': AssetSerializer(),
     'memo': StringSerializer(),
-  })
+  }),
+  'transfer_to_vesting': OperationDataSerializer(3, {
+    'from': StringSerializer(),
+    'to': StringSerializer(),
+    'amount': AssetSerializer(),
+  }),
+  'withdraw_vesting': OperationDataSerializer(4, {
+    'account': StringSerializer(),
+    'vesting_shares': AssetSerializer(),
+  }),
+  'custom_json': OperationDataSerializer(18, {
+    'required_auths': ArraySerializer(StringSerializer()),
+    'required_posting_auths': ArraySerializer(StringSerializer()),
+    'id': StringSerializer(),
+    'json': StringSerializer(),
+  }),
 };
 
 final TransactionSerializer = ObjectSerializer({

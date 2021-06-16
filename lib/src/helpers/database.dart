@@ -133,7 +133,7 @@ class DatabaseAPI {
   }
 
   /// Verify signed transaction.
-  Future verifyAuthority(SignedTransaction stx) async {
+  Future<bool> verifyAuthority(SignedTransaction stx) async {
     return await call('verify_authority', [stx])
         .then((value) => value['result']);
   }
