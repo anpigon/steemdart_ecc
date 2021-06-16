@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:math' as math;
+
 import 'package:http/http.dart' as http;
 import 'package:http/retry.dart';
 
-import './helpers/database.dart';
+import './error/rpc_error.dart';
 import './helpers/broadcast.dart';
+import './helpers/database.dart';
 import './helpers/rc.dart';
 
 /// Library version.
@@ -23,12 +25,15 @@ class Client {
   final String addressPrefix;
 
   late DatabaseAPI _database;
+
   DatabaseAPI get database => _database;
 
   late BroadcastAPI _broadcast;
+
   BroadcastAPI get broadcast => _broadcast;
 
   late RCAPI _rc;
+
   RCAPI get rc => _rc;
 
   Client(
@@ -86,7 +91,14 @@ class Client {
         Map<String, dynamic> result = json.decode(response.body);
         assert(result['id'] == request['id'], 'got invalid response id');
         if (result.containsKey('error')) {
-          throw Exception(result['error']);
+          final code = result['error']['code'] as int;
+          final message = result['error']['message'];
+          final data = result['error']['data'];
+          throw RPCError(
+            message,
+            code: code,
+            info: data,
+          );
         }
         return result;
       }

@@ -7,3 +7,4 @@ export 'src/signature.dart';
 export 'src/exception.dart';
 export 'src/client.dart';
 export 'src/models/models.dart';
+export 'src/error/rpc_error.dart';

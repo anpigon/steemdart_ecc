@@ -1,3 +1,4 @@
+import 'package:steemdart_ecc/src/error/rpc_error.dart';
 import 'package:test/test.dart';
 import 'package:dotenv/dotenv.dart' show load, env;
 import 'package:steemdart_ecc/steemdart_ecc.dart';
