@@ -1,5 +1,3 @@
-import 'dart:developer' as developer;
-
 import '../../steemdart_ecc.dart';
 import '../models/operation.dart';
 import '../models/transaction.dart';

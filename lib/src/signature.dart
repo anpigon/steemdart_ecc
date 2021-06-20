@@ -10,7 +10,7 @@ import 'package:pointycastle/ecc/api.dart'
 import 'package:pointycastle/signers/ecdsa_signer.dart';
 import 'package:pointycastle/macs/hmac.dart';
 import 'package:pointycastle/digests/sha256.dart';
-import 'package:pointycastle/src/utils.dart';
+import 'package:pointycastle/src/utils.dart' as utils;
 
 import './exception.dart';
 import './key.dart';
@@ -119,8 +119,8 @@ class SteemSignature extends SteemKey {
   String toString() {
     var b = <int>[];
     b.add(i);
-    b.addAll(encodeBigInt(ecSig.r));
-    b.addAll(encodeBigInt(ecSig.s));
+    b.addAll(utils.encodeBigInt(ecSig.r));
+    b.addAll(utils.encodeBigInt(ecSig.s));
 
     var buffer = Uint8List.fromList(b);
     return 'SIG_${keyType}_${SteemKey.encodeKey(buffer, keyType)}';
@@ -129,8 +129,8 @@ class SteemSignature extends SteemKey {
   Uint8List toBuffer() {
     var b = <int>[];
     b.add(i);
-    b.addAll(encodeBigInt(ecSig.r));
-    b.addAll(encodeBigInt(ecSig.s));
+    b.addAll(utils.encodeBigInt(ecSig.r));
+    b.addAll(utils.encodeBigInt(ecSig.s));
     var buffer = Uint8List.fromList(b);
     return buffer;
   }
@@ -141,8 +141,8 @@ class SteemSignature extends SteemKey {
 
   /// ECSignature to DER format bytes
   static Uint8List ecSigToDER(ECSignature ecSig) {
-    var r = SteemKey.toSigned(encodeBigInt(ecSig.r));
-    var s = SteemKey.toSigned(encodeBigInt(ecSig.s));
+    var r = SteemKey.toSigned(utils.encodeBigInt(ecSig.r));
+    var s = SteemKey.toSigned(utils.encodeBigInt(ecSig.s));
 
     var b = <int>[];
     b.add(0x02);

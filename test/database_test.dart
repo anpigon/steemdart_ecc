@@ -1,4 +1,3 @@
-import 'package:steemdart_ecc/src/error/rpc_error.dart';
 import 'package:test/test.dart';
 import 'package:dotenv/dotenv.dart' show load, env;
 import 'package:steemdart_ecc/steemdart_ecc.dart';
@@ -139,7 +138,9 @@ void main() {
             .verifyAuthority(client.broadcast.sign(tx, bogusKey));
         assert(false, 'should not be reached');
       } catch (error) {
-        assert(error.toString().contains('Missing Posting Authority ${TEST_ACCOUNT!}'));
+        assert(error
+            .toString()
+            .contains('Missing Posting Authority $TEST_ACCOUNT'));
       }
     });
   });

@@ -4,12 +4,31 @@ import 'dart:math';
 
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
-import 'package:pointycastle/src/utils.dart';
+import 'package:pointycastle/src/utils.dart' as utils;
 import 'package:pointycastle/ecc/api.dart' show ECSignature, ECPoint;
 
 import './exception.dart';
 import './key_base.dart';
 import './signature.dart';
+
+/// ref: ref: https://github.com/cryptocoinjs/bigi/blob/cb702633d6587a4326cc8c79b4024444caf9531f/lib/convert.js#L59
+BigInt decodeBigInt(List<int> bytes) {
+  var negative = bytes.isNotEmpty && bytes[0] & 0x80 == 0x80;
+  BigInt result;
+
+  if (bytes.length == 1) {
+    result = BigInt.from(bytes[0]);
+  } else {
+    result = BigInt.zero;
+    for (var i = 0; i < bytes.length; i++) {
+      var item = bytes[bytes.length - i - 1];
+      result |= (BigInt.from(item) << (8 * i));
+    }
+  }
+  if (result == BigInt.zero) return BigInt.zero;
+  // if (negative) return result.toSigned(result.bitLength);
+  return result;
+}
 
 ///  Steem Public Key
 class SteemPublicKey extends SteemKey {
@@ -137,13 +156,13 @@ class SteemPrivateKey extends SteemKey {
     }
 
     var randomInt1 = randomGenerator.nextInt(randomLimit);
-    var entropy1 = encodeBigInt(BigInt.from(randomInt1));
+    var entropy1 = utils.encodeBigInt(BigInt.from(randomInt1));
 
     var randomInt2 = randomGenerator.nextInt(randomLimit);
-    var entropy2 = encodeBigInt(BigInt.from(randomInt2));
+    var entropy2 = utils.encodeBigInt(BigInt.from(randomInt2));
 
     var randomInt3 = randomGenerator.nextInt(randomLimit);
-    var entropy3 = encodeBigInt(BigInt.from(randomInt3));
+    var entropy3 = utils.encodeBigInt(BigInt.from(randomInt3));
 
     var entropy = entropy1.toList();
     entropy.addAll(entropy2);
