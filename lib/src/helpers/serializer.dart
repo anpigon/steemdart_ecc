@@ -206,6 +206,12 @@ final Map<String, Serializer> OperationSerializers = {
     'id': StringSerializer(),
     'json': StringSerializer(),
   }),
+  'claim_reward_balance': OperationDataSerializer(39, {
+    'account': StringSerializer(),
+    'reward_steem': AssetSerializer(),
+    'reward_sbd': AssetSerializer(),
+    'reward_vests': AssetSerializer(),
+  }),
   'delegate_vesting_shares': OperationDataSerializer(40, {
     'delegator': StringSerializer(),
     'delegatee': StringSerializer(),
