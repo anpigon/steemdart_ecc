@@ -202,6 +202,11 @@ final Map<String, Serializer> OperationSerializers = {
     'id': StringSerializer(),
     'json': StringSerializer(),
   }),
+  'delegate_vesting_shares': OperationDataSerializer(40, {
+    'delegator': StringSerializer(),
+    'delegatee': StringSerializer(),
+    'vesting_shares': AssetSerializer(),
+  }),
 };
 
 final TransactionSerializer = ObjectSerializer({
