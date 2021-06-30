@@ -200,6 +200,10 @@ final Map<String, Serializer> OperationSerializers = {
     'account': StringSerializer(),
     'proxy': StringSerializer(),
   }),
+  'delete_comment': OperationDataSerializer(17, {
+    'author': StringSerializer(),
+    'permlink': StringSerializer(),
+  }),
   'custom_json': OperationDataSerializer(18, {
     'required_auths': ArraySerializer(StringSerializer()),
     'required_posting_auths': ArraySerializer(StringSerializer()),
