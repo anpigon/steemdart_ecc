@@ -196,6 +196,10 @@ final Map<String, Serializer> OperationSerializers = {
     'account': StringSerializer(),
     'vesting_shares': AssetSerializer(),
   }),
+  'account_witness_proxy': OperationDataSerializer(13, {
+    'account': StringSerializer(),
+    'proxy': StringSerializer(),
+  }),
   'custom_json': OperationDataSerializer(18, {
     'required_auths': ArraySerializer(StringSerializer()),
     'required_posting_auths': ArraySerializer(StringSerializer()),
