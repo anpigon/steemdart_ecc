@@ -40,6 +40,15 @@ abstract class Serializer<T extends dynamic> {
   void appendByteBuffer(BytesBuilder buffer, T value) {}
 }
 
+class Int16Serializer implements Serializer<int> {
+  @override
+  void appendByteBuffer(buffer, value) {
+    final byte = ByteData(2);
+    byte.setInt16(0, value, Endian.little);
+    buffer.add(byte.buffer.asUint8List());
+  }
+}
+
 class UInt16Serializer implements Serializer<int> {
   @override
   void appendByteBuffer(buffer, value) {
@@ -172,6 +181,12 @@ class AssetSerializer implements Serializer<String> {
 }
 
 final Map<String, Serializer> OperationSerializers = {
+  'vote': OperationDataSerializer(0, {
+    'voter': StringSerializer(),
+    'author': StringSerializer(),
+    'permlink': StringSerializer(),
+    'weight': Int16Serializer(),
+  }),
   'comment': OperationDataSerializer(1, {
     'parent_author': StringSerializer(),
     'parent_permlink': StringSerializer(),
