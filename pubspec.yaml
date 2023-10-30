@@ -11,15 +11,15 @@ dependencies:
   pointycastle: ^3.0.1
   crypto: ^3.0.1
   convert: ^3.0.0
-  http: ^0.13.3
+  http: ^1.1.0
   json_annotation: ^4.0.1
   buffer: ^1.1.1
 
 dev_dependencies:
   test: ^1.18.1
-  dotenv: ^3.0.0
+  dotenv: ^4.2.0
   pedantic: ^1.11.0
   build_runner: ^2.0.4
-  json_serializable: ^4.1.2
-  analyzer: ^1.7.0
+  json_serializable: ^6.7.1
+  analyzer: ^6.3.0
   data_faker: ^0.0.5
