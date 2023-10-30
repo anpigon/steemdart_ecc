@@ -1,7 +1,4 @@
 import '../../steemdart_ecc.dart';
-import '../models/operation.dart';
-import '../models/transaction.dart';
-import '../client.dart';
 import '../crypto_utils.dart';
 import './utils.dart';
 

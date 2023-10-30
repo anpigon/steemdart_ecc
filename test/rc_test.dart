@@ -1,4 +1,3 @@
-import 'package:steemdart_ecc/src/models/rc_params.dart';
 import 'package:test/test.dart';
 
 import 'package:steemdart_ecc/steemdart_ecc.dart';
@@ -26,19 +25,16 @@ void main() {
     test('getResourceParams', () async {
       final result = await client.rc.getResourceParams();
       print(result.toJson());
-      assert(result is RCParams);
     });
 
     test('getResourcePool', () async {
       final result = await client.rc.getResourcePool();
       print(result.toJson());
-      assert(result is RCPool);
     });
 
     test('getResourcePool', () async {
       final result = await client.rc.getResourcePool();
       print(result.toJson());
-      assert(result is RCPool);
     });
 
     test('calculateVPMana', () async {

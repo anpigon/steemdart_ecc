@@ -3,8 +3,6 @@ import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart';
 
 import '../steemdart_ecc.dart';
-import './client.dart';
-import './models/transaction.dart';
 import './helpers/serializer.dart';
 
 /// Return copy of transaction with signature appended to signatures array.
